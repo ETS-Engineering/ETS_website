@@ -3,14 +3,16 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="shortcut icon" href="common/logo.png" type="image/x-icon">
-		<title>E.T.S. sas — Energia, Tecnologia, Sicurezza</title>
+		<link rel="icon" href="common/logo.png" type="image/x-icon" />
+		<title>E.T.S. sas — Energia, Tecnologia, Automazione </title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link
-			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap"
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
 			rel="stylesheet"
 		/>
+
 		<style>
+			/* ── Reset ── */
 			*,
 			*::before,
 			*::after {
@@ -18,6 +20,12 @@
 				margin: 0;
 				padding: 0;
 			}
+			ul,
+			ol {
+				list-style: none;
+			}
+
+			/* ── Tokens ── */
 			:root {
 				--bg: #0d0f12;
 				--bg2: #13161b;
@@ -33,7 +41,11 @@
 				--amber: #f59e0b;
 				--r: 10px;
 				--r2: 16px;
+				--nav-h: 64px;
+				--max-w: 1100px;
 			}
+
+			/* ── Base ── */
 			html {
 				scroll-behavior: smooth;
 			}
@@ -45,32 +57,77 @@
 				overflow-x: hidden;
 			}
 
-			/* NAV */
-			nav {
+			/* ── Typography utilities ── */
+			.label {
+				font-size: 0.75rem;
+				font-weight: 700;
+				color: var(--accent);
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				margin-bottom: 0.75rem;
+			}
+			.title {
+				font-size: clamp(1.4rem, 3vw, 2rem);
+				font-weight: 700;
+				letter-spacing: -0.02em;
+				line-height: 1.2;
+				margin-bottom: 1rem;
+			}
+			.subtitle {
+				color: var(--text2);
+				line-height: 1.7;
+				max-width: 560px;
+				margin-bottom: 2.5rem;
+			}
+			.muted {
+				color: var(--text2);
+			}
+			.accent {
+				color: var(--accent);
+			}
+			.highlight {
+				color: var(--text);
+				font-weight: 600;
+			}
+
+			/* ── Layout ── */
+			.container {
+				max-width: var(--max-w);
+				margin-inline: auto;
+				padding-inline: 2rem;
+			}
+			.section {
+				padding-block: 4rem;
+			}
+			.section + .section {
+				border-top: 1px solid var(--border);
+			}
+
+			/* ── Nav ── */
+			.nav {
 				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
+				inset-block-start: 0;
+				inset-inline: 0;
 				z-index: 100;
-				background: rgba(13, 15, 18, 0.92);
+				height: var(--nav-h);
+				background: rgb(13 15 18 / 0.92);
 				backdrop-filter: blur(12px);
 				border-bottom: 1px solid var(--border);
-				height: 64px;
 				display: flex;
 				align-items: center;
-				padding: 0 2rem;
+				padding-inline: 2rem;
 				gap: 2rem;
 			}
 			.nav-logo {
+				display: flex;
+				align-items: center;
+				gap: 8px;
 				font-size: 1.1rem;
 				font-weight: 700;
 				color: var(--accent);
 				letter-spacing: -0.02em;
 				text-decoration: none;
 				white-space: nowrap;
-				display: flex;
-				align-items: center;
-				gap: 8px;
 			}
 			.nav-logo span {
 				color: var(--text);
@@ -89,16 +146,17 @@
 				font-weight: 500;
 				padding: 6px 12px;
 				border-radius: 6px;
-				transition: all 0.15s;
 				white-space: nowrap;
+				transition:
+					color 0.15s,
+					background 0.15s;
 			}
-			.nav-links a:hover,
-			.nav-links a.active {
+			.nav-links a:is(:hover, .active) {
 				color: var(--text);
 				background: var(--bg3);
 			}
 			.nav-cta {
-				margin-left: auto;
+				margin-inline-start: auto;
 				background: var(--accent);
 				color: #000;
 				font-size: 0.8rem;
@@ -112,34 +170,118 @@
 			.nav-cta:hover {
 				opacity: 0.85;
 			}
+			.nav-burger {
+				display: none;
+				flex-direction: column;
+				gap: 5px;
+				margin-inline-start: auto;
+				background: none;
+				border: none;
+				cursor: pointer;
+				padding: 8px;
+				color: var(--text);
+			}
+			.nav-burger span {
+				display: block;
+				width: 22px;
+				height: 2px;
+				background: currentColor;
+				border-radius: 2px;
+				transition:
+					transform 0.2s,
+					opacity 0.2s;
+			}
+			.nav-burger.open span:nth-child(1) {
+				transform: translateY(7px) rotate(45deg);
+			}
+			.nav-burger.open span:nth-child(2) {
+				opacity: 0;
+			}
+			.nav-burger.open span:nth-child(3) {
+				transform: translateY(-7px) rotate(-45deg);
+			}
 
-			/* PAGES */
+			/* ── Mobile drawer ── */
+			.nav-drawer {
+				display: none;
+				position: fixed;
+				inset: var(--nav-h) 0 0;
+				z-index: 99;
+				background: var(--bg);
+				overflow-y: auto;
+				padding: 1rem 1.25rem 2rem;
+				border-top: 1px solid var(--border);
+			}
+			.nav-drawer.open {
+				display: block;
+			}
+			.nav-drawer a {
+				display: block;
+				color: var(--text2);
+				text-decoration: none;
+				font-size: 1rem;
+				font-weight: 500;
+				padding: 14px 12px;
+				border-radius: var(--r);
+				border-bottom: 1px solid var(--border);
+				transition:
+					color 0.15s,
+					background 0.15s;
+			}
+			.nav-drawer a:last-child {
+				border-bottom: none;
+			}
+			.nav-drawer a:is(:hover, .active) {
+				color: var(--accent);
+				background: var(--bg3);
+			}
+			.nav-drawer .drawer-cta {
+				margin-top: 1rem;
+				background: var(--accent);
+				color: #000;
+				font-weight: 700;
+				text-align: center;
+				border: none;
+			}
+
+			/* ── Pages ── */
 			.page {
 				display: none;
-				padding-top: 64px;
+				padding-top: var(--nav-h);
 				min-height: 100vh;
 			}
 			.page.active {
 				display: block;
 			}
+			@keyframes fade-up {
+				from {
+					opacity: 0;
+					transform: translateY(16px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			.page.active :is(.hero, .section, .page-header) {
+				animation: fade-up 0.35s ease;
+			}
 
-			/* HERO */
+			/* ── Hero ── */
 			.hero {
-				padding: 6rem 2rem 4rem;
-				max-width: 1100px;
-				margin: 0 auto;
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				gap: 4rem;
 				align-items: center;
+				padding-block: 6rem 4rem;
 			}
 			.hero-badge {
 				display: inline-flex;
 				align-items: center;
 				gap: 6px;
-				background: rgba(0, 200, 150, 0.1);
+				background: rgb(0 200 150 / 0.1);
 				color: var(--accent);
-				border: 1px solid rgba(0, 200, 150, 0.2);
+				border: 1px solid rgb(0 200 150 / 0.2);
 				padding: 5px 12px;
 				border-radius: 20px;
 				font-size: 0.78rem;
@@ -147,56 +289,26 @@
 				letter-spacing: 0.04em;
 				margin-bottom: 1.5rem;
 			}
-			.hero h1 {
+			.hero-heading {
 				font-size: clamp(2rem, 4vw, 3.2rem);
 				font-weight: 700;
 				line-height: 1.1;
 				letter-spacing: -0.03em;
 				margin-bottom: 1.2rem;
 			}
-			.hero h1 em {
+			.hero-heading .accent {
 				color: var(--accent);
-				font-style: normal;
 			}
-			.hero p {
+			.hero-body {
 				color: var(--text2);
 				font-size: 1rem;
 				line-height: 1.7;
 				margin-bottom: 2rem;
 			}
-			.hero-btns {
+			.hero-actions {
 				display: flex;
 				gap: 12px;
 				flex-wrap: wrap;
-			}
-			.btn {
-				padding: 11px 22px;
-				border-radius: var(--r);
-				font-size: 0.88rem;
-				font-weight: 600;
-				cursor: pointer;
-				border: none;
-				text-decoration: none;
-				transition: all 0.15s;
-				display: inline-flex;
-				align-items: center;
-				gap: 6px;
-			}
-			.btn-primary {
-				background: var(--accent);
-				color: #000;
-			}
-			.btn-primary:hover {
-				opacity: 0.85;
-			}
-			.btn-outline {
-				background: transparent;
-				color: var(--text);
-				border: 1px solid var(--border);
-			}
-			.btn-outline:hover {
-				background: var(--bg3);
-				border-color: var(--text3);
 			}
 			.hero-visual {
 				background: var(--bg2);
@@ -205,13 +317,13 @@
 				padding: 2rem;
 				aspect-ratio: 1;
 			}
-			.hero-stat-grid {
+			.stat-grid {
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				gap: 1rem;
 				height: 100%;
 			}
-			.h-stat {
+			.stat-card {
 				background: var(--bg3);
 				border: 1px solid var(--border);
 				border-radius: var(--r);
@@ -220,69 +332,105 @@
 				flex-direction: column;
 				justify-content: space-between;
 			}
-			.h-stat-num {
+			.stat-num {
 				font-size: 2rem;
 				font-weight: 700;
 				letter-spacing: -0.04em;
 			}
-			.h-stat-num.green {
+			.stat-num.green {
 				color: var(--accent);
 			}
-			.h-stat-num.blue {
+			.stat-num.blue {
 				color: var(--accent2);
 			}
-			.h-stat-num.amber {
+			.stat-num.amber {
 				color: var(--amber);
 			}
-			.h-stat-label {
+			.stat-label {
 				font-size: 0.78rem;
 				color: var(--text2);
 				margin-top: 6px;
 			}
-			.h-stat-bar {
+			.stat-bar {
 				margin-top: 12px;
 				height: 3px;
 				background: var(--bg);
 				border-radius: 2px;
 				overflow: hidden;
 			}
-			.h-stat-bar-fill {
+			.stat-bar-fill {
 				height: 100%;
 				border-radius: 2px;
 				background: var(--accent);
-				transition: width 1s ease;
 			}
 
-			/* SECTION */
-			.section {
-				padding: 4rem 2rem;
-				max-width: 1100px;
-				margin: 0 auto;
+			/* ── Buttons ── */
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				padding: 11px 22px;
+				border-radius: var(--r);
+				font-size: 0.88rem;
+				font-weight: 600;
+				font-family: inherit;
+				cursor: pointer;
+				border: none;
+				text-decoration: none;
+				transition:
+					opacity 0.15s,
+					background 0.15s,
+					border-color 0.15s;
 			}
-			.section-label {
-				font-size: 0.75rem;
+			.btn-primary {
+				background: var(--accent);
+				color: #000;
+			}
+			.btn-primary:hover {
+				opacity: 0.85;
+			}
+			.btn-ghost {
+				background: transparent;
+				color: var(--text);
+				border: 1px solid var(--border);
+			}
+			.btn-ghost:hover {
+				background: var(--bg3);
+				border-color: var(--text3);
+			}
+			.btn-full {
+				width: 100%;
+				justify-content: center;
+			}
+
+			/* ── Brand strip ── */
+			.brand-strip {
+				border-block: 1px solid var(--border);
+				background: var(--bg2);
+				padding: 1.2rem 2rem;
+			}
+			.brand-list {
+				display: flex;
+				gap: 3rem;
+				align-items: center;
+				justify-content: center;
+				flex-wrap: wrap;
+				list-style: none;
+			}
+			.brand-list li {
+				font-size: 0.8rem;
 				font-weight: 700;
-				color: var(--accent);
-				letter-spacing: 0.1em;
+				color: var(--text3);
+				letter-spacing: 0.06em;
 				text-transform: uppercase;
-				margin-bottom: 0.75rem;
 			}
-			.section-title {
-				font-size: clamp(1.4rem, 3vw, 2rem);
-				font-weight: 700;
-				letter-spacing: -0.02em;
-				margin-bottom: 1rem;
-				line-height: 1.2;
-			}
-			.section-desc {
-				color: var(--text2);
-				line-height: 1.7;
-				max-width: 560px;
-				margin-bottom: 2.5rem;
+			.brand-list li.dot {
+				color: var(--border);
+				user-select: none;
 			}
 
-			/* CARDS GRID */
-			.cards {
+			/* ── Cards ── */
+			.card-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 				gap: 1rem;
@@ -296,6 +444,11 @@
 					border-color 0.2s,
 					transform 0.2s;
 				cursor: default;
+				display: flex;
+				flex-direction: column;
+			}
+			.card-body {
+				flex: 1;
 			}
 			.card:hover {
 				border-color: var(--accent);
@@ -305,33 +458,33 @@
 				width: 42px;
 				height: 42px;
 				border-radius: 10px;
-				background: rgba(0, 200, 150, 0.12);
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				margin-bottom: 1rem;
 				font-size: 1.3rem;
+				margin-bottom: 1rem;
+				background: rgb(0 200 150 / 0.12);
 			}
 			.card-icon.blue {
-				background: rgba(0, 132, 255, 0.12);
+				background: rgb(0 132 255 / 0.12);
 			}
 			.card-icon.amber {
-				background: rgba(245, 158, 11, 0.12);
+				background: rgb(245 158 11 / 0.12);
 			}
 			.card-icon.red {
-				background: rgba(255, 77, 77, 0.12);
+				background: rgb(255 77 77 / 0.12);
 			}
-			.card h3 {
+			.card-title {
 				font-size: 1rem;
 				font-weight: 600;
 				margin-bottom: 0.5rem;
 			}
-			.card p {
+			.card-body {
 				font-size: 0.85rem;
 				color: var(--text2);
 				line-height: 1.6;
 			}
-			.card-tags {
+			.tag-list {
 				display: flex;
 				gap: 6px;
 				flex-wrap: wrap;
@@ -347,19 +500,91 @@
 				font-weight: 500;
 			}
 			.tag.accent {
-				background: rgba(0, 200, 150, 0.1);
+				background: rgb(0 200 150 / 0.1);
 				color: var(--accent);
-				border-color: rgba(0, 200, 150, 0.2);
+				border-color: rgb(0 200 150 / 0.2);
 			}
 
-			/* PRODUCT TABLE */
-			.prod-table {
+			/* ── About prose ── */
+			.about-body {
+				color: var(--text2);
+				line-height: 1.8;
+				max-width: 700px;
+				font-size: 0.92rem;
+			}
+
+			/* ── Spec grid ── */
+			.spec-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+				gap: 0.75rem;
+				margin-top: 1.5rem;
+			}
+			.spec-item {
+				background: var(--bg3);
+				border: 1px solid var(--border);
+				border-radius: var(--r);
+				padding: 1rem 1.25rem;
+				display: flex;
+				flex-direction: column;
+			}
+			.spec-item dt {
+				font-size: 0.72rem;
+				color: var(--text3);
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				font-weight: 600;
+				margin-bottom: 4px;
+				flex: 1;
+			}
+			.spec-item dd {
+				font-size: 0.95rem;
+				font-weight: 500;
+				color: var(--text);
+			}
+
+			/* ── Page header ── */
+			.page-header {
+				background: linear-gradient(135deg, var(--bg2) 0%, var(--bg) 100%);
+				border-bottom: 1px solid var(--border);
+				padding-block: 3.5rem 2.5rem;
+			}
+			.breadcrumb {
+				display: flex;
+				gap: 6px;
+				align-items: center;
+				font-size: 0.75rem;
+				color: var(--text3);
+				margin-bottom: 0.75rem;
+			}
+			.breadcrumb a {
+				color: var(--text3);
+				text-decoration: none;
+			}
+			.breadcrumb a:hover {
+				color: var(--accent);
+			}
+			.page-title {
+				font-size: clamp(1.6rem, 4vw, 2.4rem);
+				font-weight: 700;
+				letter-spacing: -0.03em;
+				margin-bottom: 0.5rem;
+			}
+			.page-desc {
+				color: var(--text2);
+				font-size: 0.95rem;
+				max-width: 600px;
+				line-height: 1.6;
+			}
+
+			/* ── Table ── */
+			.data-table {
 				width: 100%;
 				border-collapse: collapse;
 				font-size: 0.88rem;
 				margin-top: 1rem;
 			}
-			.prod-table th {
+			.data-table th {
 				text-align: left;
 				padding: 10px 14px;
 				font-size: 0.75rem;
@@ -369,15 +594,15 @@
 				letter-spacing: 0.06em;
 				border-bottom: 1px solid var(--border);
 			}
-			.prod-table td {
+			.data-table td {
 				padding: 12px 14px;
-				border-bottom: 1px solid rgba(42, 48, 61, 0.5);
+				border-bottom: 1px solid rgb(42 48 61 / 0.5);
 				color: var(--text2);
 			}
-			.prod-table tr:hover td {
+			.data-table tr:hover td {
 				background: var(--bg3);
 			}
-			.prod-table td:first-child {
+			.data-table td:first-child {
 				color: var(--text);
 				font-weight: 500;
 			}
@@ -389,107 +614,27 @@
 				font-weight: 600;
 			}
 			.badge-green {
-				background: rgba(0, 200, 150, 0.12);
+				background: rgb(0 200 150 / 0.12);
 				color: var(--accent);
 			}
 			.badge-blue {
-				background: rgba(0, 132, 255, 0.12);
+				background: rgb(0 132 255 / 0.12);
 				color: var(--accent2);
 			}
 			.badge-amber {
-				background: rgba(245, 158, 11, 0.12);
+				background: rgb(245 158 11 / 0.12);
 				color: var(--amber);
 			}
 
-			/* SPECS GRID */
-			.specs-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-				gap: 0.75rem;
-				margin-top: 1.5rem;
-			}
-			.spec-item {
-				background: var(--bg3);
-				border: 1px solid var(--border);
-				border-radius: var(--r);
-				padding: 1rem 1.25rem;
-			}
-			.spec-item label {
-				font-size: 0.72rem;
-				color: var(--text3);
-				text-transform: uppercase;
-				letter-spacing: 0.06em;
-				font-weight: 600;
-				display: block;
-				margin-bottom: 4px;
-			}
-			.spec-item span {
-				font-size: 0.95rem;
-				font-weight: 500;
-				color: var(--text);
-			}
-
-			/* CONTACT FORM */
-			.form-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 1rem;
-			}
-			.form-grid.full {
-				grid-template-columns: 1fr;
-			}
-			.form-field {
-				display: flex;
-				flex-direction: column;
-				gap: 6px;
-			}
-			.form-field label {
-				font-size: 0.8rem;
-				font-weight: 500;
-				color: var(--text2);
-			}
-			.form-field input,
-			.form-field select,
-			.form-field textarea {
-				background: var(--bg3);
-				border: 1px solid var(--border);
-				border-radius: var(--r);
-				padding: 10px 14px;
-				color: var(--text);
-				font-size: 0.88rem;
-				font-family: inherit;
-				outline: none;
-				transition: border-color 0.15s;
-			}
-			.form-field input:focus,
-			.form-field select:focus,
-			.form-field textarea:focus {
-				border-color: var(--accent);
-			}
-			.form-field textarea {
-				resize: vertical;
-				min-height: 120px;
-			}
-			.form-field select {
-				appearance: none;
-				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9ab5' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-				background-repeat: no-repeat;
-				background-position: right 12px center;
-				padding-right: 32px;
-			}
-			.form-submit {
-				margin-top: 1.5rem;
-			}
-
-			/* MAP / CONTACT INFO */
+			/* ── Contact grid ── */
 			.contact-grid {
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				gap: 2rem;
 				align-items: start;
 			}
-			.contact-block h3 {
-				font-size: 0.78rem;
+			.contact-section-title {
+				font-size: 0.75rem;
 				color: var(--text3);
 				text-transform: uppercase;
 				letter-spacing: 0.08em;
@@ -518,26 +663,107 @@
 				display: block;
 				margin-bottom: 2px;
 			}
-			.map-placeholder {
+			.info-box {
+				padding: 1.25rem;
+				background: var(--bg3);
+				border: 1px solid var(--border);
+				border-radius: var(--r);
+			}
+			.info-box-label {
+				font-size: 0.75rem;
+				color: var(--text3);
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				margin-bottom: 0.75rem;
+			}
+			.info-box p {
+				font-size: 0.88rem;
+				color: var(--text2);
+				line-height: 1.6;
+			}
+			.map-box {
 				background: var(--bg3);
 				border: 1px solid var(--border);
 				border-radius: var(--r2);
-				overflow: hidden;
 				height: 260px;
 				display: flex;
+				flex-direction: column;
 				align-items: center;
 				justify-content: center;
-				flex-direction: column;
 				gap: 8px;
 				color: var(--text3);
 				font-size: 0.85rem;
 			}
-			.map-placeholder svg {
+			.map-box svg {
 				opacity: 0.4;
 			}
+			.map-link {
+				color: var(--accent);
+				font-size: 0.8rem;
+				text-decoration: none;
+				border: 1px solid rgb(0 200 150 / 0.3);
+				padding: 6px 14px;
+				border-radius: 20px;
+				margin-top: 8px;
+				transition: background 0.15s;
+			}
+			.map-link:hover {
+				background: rgb(0 200 150 / 0.1);
+			}
+			.form-stack {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+			.form-field {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+			.form-field label {
+				font-size: 0.8rem;
+				font-weight: 500;
+				color: var(--text2);
+			}
+			.form-field input,
+			.form-field select,
+			.form-field textarea {
+				background: var(--bg3);
+				border: 1px solid var(--border);
+				border-radius: var(--r);
+				padding: 10px 14px;
+				color: var(--text);
+				font-size: 0.88rem;
+				font-family: inherit;
+				outline: none;
+				transition: border-color 0.15s;
+			}
+			.form-field :is(input, select, textarea):focus {
+				border-color: var(--accent);
+			}
+			.form-field textarea {
+				resize: vertical;
+				min-height: 120px;
+			}
+			.form-field select {
+				appearance: none;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9ab5' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+				background-repeat: no-repeat;
+				background-position: right 12px center;
+				padding-right: 32px;
+			}
+			.form-title {
+				font-size: 0.8rem;
+				font-weight: 700;
+				color: var(--text3);
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				margin-bottom: 1rem;
+			}
 
-			/* AUTONOMIA CALC */
-			.calc-container {
+			/* ── Calc ── */
+			.calc-box {
 				background: var(--bg2);
 				border: 1px solid var(--border);
 				border-radius: var(--r2);
@@ -569,7 +795,7 @@
 			}
 			.calc-result {
 				background: var(--bg3);
-				border: 1px solid rgba(0, 200, 150, 0.2);
+				border: 1px solid rgb(0 200 150 / 0.2);
 				border-radius: var(--r);
 				padding: 1.25rem;
 				margin-top: 1rem;
@@ -580,19 +806,27 @@
 			.calc-val {
 				text-align: center;
 			}
-			.calc-val .num {
+			.calc-num {
 				font-size: 1.8rem;
 				font-weight: 700;
 				color: var(--accent);
 				letter-spacing: -0.04em;
 			}
-			.calc-val .lbl {
+			.calc-num.blue {
+				color: var(--accent2);
+			}
+			.calc-lbl {
 				font-size: 0.75rem;
 				color: var(--text3);
 				margin-top: 4px;
 			}
+			.calc-note {
+				margin-top: 1rem;
+				font-size: 0.78rem;
+				color: var(--text3);
+			}
 
-			/* ACCORDION */
+			/* ── Accordion ── */
 			.accord-item {
 				border-bottom: 1px solid var(--border);
 			}
@@ -611,13 +845,13 @@
 				justify-content: space-between;
 				align-items: center;
 				gap: 1rem;
+				transition: color 0.15s;
 			}
 			.accord-btn:hover {
 				color: var(--accent);
 			}
 			.accord-icon {
 				flex-shrink: 0;
-				transition: transform 0.2s;
 				font-size: 1rem;
 				color: var(--text3);
 			}
@@ -632,118 +866,173 @@
 				display: block;
 			}
 
-			/* FOOTER */
+			/* ── Partner box ── */
+			.partner-box {
+				margin-top: 2.5rem;
+				padding: 1.5rem;
+				background: var(--bg3);
+				border: 1px solid var(--border);
+				border-radius: var(--r2);
+			}
+			.partner-box-label {
+				font-size: 0.78rem;
+				color: var(--text3);
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				font-weight: 700;
+				margin-bottom: 1rem;
+			}
+			.partner-list {
+				display: flex;
+				gap: 2rem;
+				flex-wrap: wrap;
+				align-items: center;
+			}
+			.partner-name {
+				font-weight: 700;
+				font-size: 1.1rem;
+				color: var(--text2);
+			}
+			.partner-name.featured {
+				color: var(--accent);
+			}
+
+			/* ── Footer ── */
 			footer {
 				border-top: 1px solid var(--border);
 				padding: 2rem;
-				margin-top: 4rem;
-				max-width: 1100px;
-				margin-left: auto;
-				margin-right: auto;
+				max-width: var(--max-w);
+				margin-inline: auto;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				flex-wrap: wrap;
 				gap: 1rem;
+				margin-top: 4rem;
 			}
-			footer p {
+			.footer-copy {
 				font-size: 0.8rem;
 				color: var(--text3);
 			}
-			footer .footer-nav {
+			.footer-nav {
 				display: flex;
 				gap: 1.5rem;
 			}
-			footer .footer-nav a {
+			.footer-nav a {
 				font-size: 0.8rem;
 				color: var(--text3);
 				text-decoration: none;
+				transition: color 0.15s;
 			}
-			footer .footer-nav a:hover {
+			.footer-nav a:hover {
 				color: var(--accent);
 			}
 
-			/* BRAND STRIP */
-			.brand-strip {
-				border-top: 1px solid var(--border);
-				border-bottom: 1px solid var(--border);
-				background: var(--bg2);
-				padding: 1.2rem 2rem;
-				overflow: hidden;
-			}
-			.brand-inner {
-				display: flex;
-				gap: 3rem;
-				align-items: center;
-				justify-content: center;
-				flex-wrap: wrap;
-			}
-			.brand-item {
-				font-size: 0.8rem;
-				font-weight: 700;
-				color: var(--text3);
-				letter-spacing: 0.06em;
-				text-transform: uppercase;
-			}
-
-			/* PAGE HEADER */
-			.page-header {
-				background: linear-gradient(135deg, var(--bg2) 0%, var(--bg) 100%);
-				border-bottom: 1px solid var(--border);
-				padding: 3.5rem 2rem 2.5rem;
-				max-width: 1100px;
-				margin: 0 auto;
-			}
-			.page-header .breadcrumb {
-				font-size: 0.75rem;
-				color: var(--text3);
-				margin-bottom: 0.75rem;
-				display: flex;
-				gap: 6px;
-				align-items: center;
-			}
-			.page-header .breadcrumb a {
-				color: var(--text3);
-				text-decoration: none;
-			}
-			.page-header .breadcrumb a:hover {
-				color: var(--accent);
-			}
-			.page-header h1 {
-				font-size: clamp(1.6rem, 4vw, 2.4rem);
-				font-weight: 700;
-				letter-spacing: -0.03em;
-				margin-bottom: 0.5rem;
-			}
-			.page-header p {
-				color: var(--text2);
-				font-size: 0.95rem;
-				max-width: 600px;
-				line-height: 1.6;
-			}
-
-			/* ANIM */
-			@keyframes fadeUp {
-				from {
-					opacity: 0;
-					transform: translateY(16px);
+			/* ── Responsive ── */
+			@media (max-width: 768px) {
+				nav {
+					padding-inline: 1.25rem;
+					gap: 0;
 				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
+				.nav-links,
+				.nav-cta {
+					display: none;
+				}
+				.nav-burger {
+					display: flex;
+				}
+
+				.container {
+					padding-inline: 1.25rem;
+				}
+				.hero {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+					padding-block: 2.5rem 2rem;
+				}
+				.hero-visual {
+					aspect-ratio: auto;
+				}
+				.stat-grid {
+					grid-template-columns: 1fr 1fr;
+					gap: 0.75rem;
+				}
+				.stat-num {
+					font-size: 1.5rem;
+				}
+				.section {
+					padding-block: 2.5rem;
+				}
+				.page-header {
+					padding-block: 2rem 1.5rem;
+				}
+				.card-grid {
+					grid-template-columns: 1fr;
+				}
+				.spec-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+				.contact-grid {
+					grid-template-columns: 1fr;
+				}
+				.data-table {
+					display: block;
+					overflow-x: auto;
+					white-space: nowrap;
+				}
+				.calc-box {
+					padding: 1.25rem;
+				}
+				.calc-row {
+					flex-wrap: wrap;
+					gap: 0.5rem;
+				}
+				.calc-row label {
+					flex: 0 0 100%;
+					font-size: 0.8rem;
+				}
+				.calc-row output {
+					min-width: 60px;
+				}
+				.brand-list {
+					gap: 1.5rem;
+				}
+				footer {
+					flex-direction: column;
+					align-items: flex-start;
+					padding: 1.5rem 1.25rem;
+				}
+				.footer-nav {
+					flex-wrap: wrap;
+					gap: 1rem;
+				}
+				.hero-actions .btn {
+					flex: 1;
+					justify-content: center;
 				}
 			}
-			.page.active .hero,
-			.page.active .section,
-			.page.active .page-header {
-				animation: fadeUp 0.35s ease;
+			@media (max-width: 400px) {
+				.spec-grid {
+					grid-template-columns: 1fr;
+				}
+				.stat-num {
+					font-size: 1.3rem;
+				}
 			}
 		</style>
 	</head>
+
 	<body>
-		<nav>
-			<a class="nav-logo" href="#" onclick="showPage('home')">
-				<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+		<!-- ── Nav ── -->
+		<nav class="nav" id="main-nav">
+			<a class="nav-logo" data-page="home" href="#">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					aria-hidden="true"
+				>
 					<polygon
 						points="10,2 18,7 18,13 10,18 2,13 2,7"
 						stroke="#00c896"
@@ -752,124 +1041,109 @@
 					/>
 					<circle cx="10" cy="10" r="3" fill="#00c896" />
 				</svg>
-				<span>E.T.S. <strong>sas</strong></span>
+				<span>E.T.S. <b>sas</b></span>
 			</a>
 			<div class="nav-links">
-				<a href="#" onclick="showPage('home')" id="nav-home" class="active"
-					>Home</a
-				>
-				<a href="#" onclick="showPage('energia')" id="nav-energia"
-					>Energia &amp; UPS</a
-				>
-				<!-- 
-				<a href="#" onclick="showPage('sicurezza')" id="nav-sicurezza"
-					>Sicurezza</a
-				>
-				<a href="#" onclick="showPage('networking')" id="nav-networking"
-					>Networking</a
-				>
-				<a href="#" onclick="showPage('led')" id="nav-led">LED</a> 
-				-->
-				<a href="#" onclick="showPage('industria')" id="nav-industria"
-					>Industria</a
-				>
-				<a href="#" onclick="showPage('service')" id="nav-service">Service</a>
-				<a href="#" onclick="showPage('contatti')" id="nav-contatti"
-					>Contatti</a
-				>
+				<a data-page="home" href="#" id="nav-home" class="active">Home</a>
+				<a data-page="energia" href="#" id="nav-energia">Energia &amp; UPS</a>
+				<a data-page="industria" href="#" id="nav-industria">Industria</a>
+				<a data-page="service" href="#" id="nav-service">Service</a>
+				<a data-page="contatti" href="#" id="nav-contatti">Contatti</a>
 			</div>
-			<a
-				class="nav-cta"
-				href="#"
-				onclick="
-					showPage('contatti');
-					return false;
-				"
-				>Richiedi offerta →</a
+			<a class="nav-cta" data-page="contatti" href="#">Richiedi offerta →</a>
+			<button
+				class="nav-burger"
+				id="nav-burger"
+				aria-label="Apri menu"
+				aria-expanded="false"
 			>
+				<span></span><span></span><span></span>
+			</button>
 		</nav>
 
-		<!-- ==================== HOME ==================== -->
-		<div id="page-home" class="page active">
-			<div class="hero">
+		<div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+			<a data-page="home" href="#" id="drawer-home" class="active">🏠 Home</a>
+			<a data-page="energia" href="#" id="drawer-energia"
+				>⚡ Energia &amp; UPS</a
+			>
+			<a data-page="industria" href="#" id="drawer-industria">🏭 Industria</a>
+			<a data-page="service" href="#" id="drawer-service">🔧 Service</a>
+			<a data-page="contatti" href="#" id="drawer-contatti">📍 Contatti</a>
+			<a data-page="contatti" href="#" class="drawer-cta">Richiedi offerta →</a>
+		</div>
+
+		<!-- ══════════════════════════════════════════════════════ HOME -->
+		<main id="page-home" class="page active">
+			<div class="container section hero">
 				<div>
-					<div class="hero-badge">
-						<svg width="10" height="10" viewBox="0 0 10 10">
+					<p class="hero-badge">
+						<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
 							<circle cx="5" cy="5" r="4" fill="#00c896" />
 						</svg>
 						Centro assistenza autorizzato — Centro-Sud Italia
-					</div>
-					<h1>
-						Energia, Sicurezza e<br /><em>Tecnologia</em><br />per la tua
-						azienda
-					</h1>
-					<p>
-						Dal 2006 E.T.S. sas fornisce soluzioni professionali per UPS,
-						continuità di energia, elettronica per automazioni e assistenza specializzata on-site. Prodotti scelti, testati e assistiti direttamente da noi.
 					</p>
-					<div class="hero-btns">
-						<a
-							class="btn btn-primary"
-							href="#"
-							onclick="
-								showPage('energia');
-								return false;
-							"
+					<h1 class="hero-heading">
+						Energia e<br />
+						<span class="accent">Tecnologia</span><br />
+						per la tua azienda
+					</h1>
+					<p class="hero-body">
+						Dal 2006 E.T.S. sas fornisce soluzioni professionali per UPS,
+						continuità di energia, elettronica per automazioni e assistenza
+						specializzata on-site. Prodotti scelti, testati e assistiti
+						direttamente da noi.
+					</p>
+					<div class="hero-actions">
+						<a class="btn btn-primary" data-page="energia" href="#"
 							>Scopri i prodotti →</a
 						>
-						<a
-							class="btn btn-outline"
-							href="#"
-							onclick="
-								showPage('contatti');
-								return false;
-							"
+						<a class="btn btn-ghost" data-page="contatti" href="#"
 							>Contattaci</a
 						>
 					</div>
 				</div>
-				<div class="hero-visual">
-					<div class="hero-stat-grid">
-						<div class="h-stat">
+				<div class="hero-visual" aria-hidden="true">
+					<div class="stat-grid">
+						<div class="stat-card">
 							<div>
-								<div class="h-stat-num green">2006</div>
-								<div class="h-stat-label">Anno di fondazione</div>
+								<p class="stat-num green">2006</p>
+								<p class="stat-label">Anno di fondazione</p>
 							</div>
-							<div class="h-stat-bar">
-								<div class="h-stat-bar-fill" style="width: 100%"></div>
+							<div class="stat-bar">
+								<div class="stat-bar-fill" style="width: 100%"></div>
 							</div>
 						</div>
-						<div class="h-stat">
+						<div class="stat-card">
 							<div>
-								<div class="h-stat-num blue">4+</div>
-								<div class="h-stat-label">Brand autorizzati UPS</div>
+								<p class="stat-num blue">4+</p>
+								<p class="stat-label">Brand autorizzati UPS</p>
 							</div>
-							<div class="h-stat-bar">
+							<div class="stat-bar">
 								<div
-									class="h-stat-bar-fill"
+									class="stat-bar-fill"
 									style="width: 80%; background: var(--accent2)"
 								></div>
 							</div>
 						</div>
-						<div class="h-stat">
+						<div class="stat-card">
 							<div>
-								<div class="h-stat-num amber">7</div>
-								<div class="h-stat-label">Settori di attività</div>
+								<p class="stat-num amber">7</p>
+								<p class="stat-label">Settori di attività</p>
 							</div>
-							<div class="h-stat-bar">
+							<div class="stat-bar">
 								<div
-									class="h-stat-bar-fill"
+									class="stat-bar-fill"
 									style="width: 70%; background: var(--amber)"
 								></div>
 							</div>
 						</div>
-						<div class="h-stat">
+						<div class="stat-card">
 							<div>
-								<div class="h-stat-num green">H24</div>
-								<div class="h-stat-label">Supporto service</div>
+								<p class="stat-num green">H24</p>
+								<p class="stat-label">Supporto service</p>
 							</div>
-							<div class="h-stat-bar">
-								<div class="h-stat-bar-fill" style="width: 100%"></div>
+							<div class="stat-bar">
+								<div class="stat-bar-fill" style="width: 100%"></div>
 							</div>
 						</div>
 					</div>
@@ -877,1100 +1151,849 @@
 			</div>
 
 			<div class="brand-strip">
-				<div class="brand-inner">
-					<div class="brand-item">Astrid</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">Borri</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">GSC Elettronica</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">Tecnoware</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">CSB Battery</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">Jablotron</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">Hikvision</div>
-					<div class="brand-item" style="color: var(--text3)">·</div>
-					<div class="brand-item">88Light</div>
-				</div>
+				<ul class="brand-list">
+					<li>Astrid</li>
+					<li class="dot">·</li>
+					<li>Borri</li>
+					<li class="dot">·</li>
+					<li>GSC Elettronica</li>
+					<li class="dot">·</li>
+					<li>Tecnoware</li>
+					<li class="dot">·</li>
+					<li>CSB Battery</li>
+					<li class="dot">·</li>
+					<li>Jablotron</li>
+					<li class="dot">·</li>
+					<li>Hikvision</li>
+					<li class="dot">·</li>
+					<li>88Light</li>
+				</ul>
 			</div>
 
-			<div class="section">
-				<div class="section-label">Cosa facciamo</div>
-				<div class="section-title">Soluzioni complete per ogni esigenza</div>
-				<div class="section-desc">
+			<div class="container section">
+				<p class="label">Cosa facciamo</p>
+				<h2 class="title">Soluzioni complete per ogni esigenza</h2>
+				<p class="subtitle">
 					Il nostro core business è la fornitura e manutenzione di sistemi di
 					alimentazione, affiancato da sicurezza, networking e illuminazione
 					industriale.
-				</div>
-				<div class="cards">
-					<div class="card" onclick="showPage('energia')">
+				</p>
+				<div class="card-grid">
+					<article class="card" data-page="energia" role="button" tabindex="0">
 						<div class="card-icon">⚡</div>
-						<h3>Energia &amp; UPS</h3>
-						<p>
+						<h3 class="card-title">Energia &amp; UPS</h3>
+						<p class="card-body">
 							Gruppi di continuità per ogni applicazione: ufficio, server room,
 							industriale. UPS interattivi, online e trifase. Soccorritori e
 							batterie.
 						</p>
-						<div class="card-tags">
-							<span class="tag accent">Core business</span
-							><span class="tag">Astrid</span><span class="tag">Borri</span>
-						</div>
-					</div>
-					<div class="card" onclick="showPage('industria')">
+						<ul class="tag-list">
+							<li class="tag accent">Core business</li>
+							<li class="tag">Astrid</li>
+							<li class="tag">Borri</li>
+						</ul>
+					</article>
+					<article
+						class="card"
+						data-page="industria"
+						role="button"
+						tabindex="0"
+					>
 						<div class="card-icon red">🏭</div>
-						<h3>Industria</h3>
-						<p>
+						<h3 class="card-title">Industria</h3>
+						<p class="card-body">
 							Soluzioni per confezionamento, imballaggio, etichettatura e
 							lavaggio industriale in collaborazione con aziende leader del
 							territorio.
 						</p>
-						<div class="card-tags">
-							<span class="tag">Automazione</span><span class="tag">Vema</span
-							><span class="tag">Provin</span>
-						</div>
-					</div>
-					<div class="card" onclick="showPage('service')">
+						<ul class="tag-list">
+							<li class="tag">Automazione</li>
+							<li class="tag">Vema</li>
+							<li class="tag">Provin</li>
+						</ul>
+					</article>
+					<article class="card" data-page="service" role="button" tabindex="0">
 						<div class="card-icon">🔧</div>
-						<h3>Service &amp; Assistenza</h3>
-						<p>
+						<h3 class="card-title">Service &amp; Assistenza</h3>
+						<p class="card-body">
 							Centro assistenza tecnico autorizzato. Calcolo autonomia UPS,
 							registrazione prodotto, richiesta assistenza tecnica.
 						</p>
-						<div class="card-tags">
-							<span class="tag accent">Autorizzato</span
-							><span class="tag">Centro-Sud</span>
-						</div>
-					</div>
+						<ul class="tag-list">
+							<li class="tag accent">Autorizzato</li>
+							<li class="tag">Centro-Sud</li>
+						</ul>
+					</article>
 				</div>
 			</div>
 
-			<div class="section" style="border-top: 1px solid var(--border)">
-				<div class="section-label">Chi siamo</div>
-				<div class="section-title">
-					E.T.S. sas — dal 2006 al vostro servizio
-				</div>
-				<p
-					style="
-						color: var(--text2);
-						line-height: 1.8;
-						max-width: 700px;
-						font-size: 0.92rem;
-					"
-				>
-					La <strong style="color: var(--text)">E.T.S. sas</strong> nasce nel
-					2006 dall'esperienza tecnica dell'amministratore nel settore
-					<em>UPS e Conversione Energia</em>. Siamo Centro Assistenza Tecnico
-					Autorizzato di marchi italiani per la produzione di UPS come Astrid,
-					Borri, GSC Elettronica e Tecnoware.<br /><br />
+			<div class="container section">
+				<p class="label">Chi siamo</p>
+				<h2 class="title">E.T.S. sas — dal 2006 al vostro servizio</h2>
+				<p class="about-body">
+					La <span class="highlight">E.T.S. sas</span> nasce nel 2006
+					dall'esperienza tecnica dell'amministratore nel settore UPS e
+					Conversione Energia. Siamo Centro Assistenza Tecnico Autorizzato di
+					marchi italiani per la produzione di UPS come Astrid, Borri, GSC
+					Elettronica e Tecnoware.
+				</p>
+				<p class="about-body" style="margin-top: 0.75rem">
 					La crescita nel settore ha permesso di sviluppare la vendita di UPS
 					per ogni tipo di applicazione. Prodotti scelti, testati e assistiti
 					direttamente da noi.
-					<strong style="color: var(--accent)"
-						>E.T.S. è anche Sicurezza ed Automazione!</strong
-					>
+					<span class="accent">E.T.S. è anche Automazione!</span>
 				</p>
-				<div class="specs-grid" style="margin-top: 2rem">
+				<dl class="spec-grid">
 					<div class="spec-item">
-						<label>Sede legale, Laboratorio e Showroom</label><span>Pagani (SA)</span>
+						<dt>Sede legale, Laboratorio e Showroom</dt>
+						<dd>Pagani (SA)</dd>
 					</div>
 					<div class="spec-item">
-						<label>Service</label><span>+39 340 47 65 994</span>
+						<dt>Service</dt>
+						<dd>+39 340 47 65 994</dd>
 					</div>
 					<div class="spec-item">
-						<label>Email info</label><span>info@ets.campania.it</span>
+						<dt>Email info</dt>
+						<dd>info@ets.campania.it</dd>
 					</div>
 					<div class="spec-item">
-						<label>Email service</label><span>service@ets.campania.it</span>
+						<dt>Email service</dt>
+						<dd>service@ets.campania.it</dd>
 					</div>
-				</div>
+				</dl>
 			</div>
-		</div>
+		</main>
 
-		<!-- ==================== ENERGIA ==================== -->
-		<div id="page-energia" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Energia &amp; UPS
-					</div>
-					<h1>⚡ Energia &amp; UPS</h1>
-					<p>
+		<!-- ══════════════════════════════════════════════════════ ENERGIA -->
+		<main id="page-energia" class="page">
+			<div class="page-header">
+				<div class="container">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a data-page="home" href="#">Home</a
+						><span aria-hidden="true">›</span><span>Energia &amp; UPS</span>
+					</nav>
+					<h1 class="page-title">⚡ Energia &amp; UPS</h1>
+					<p class="page-desc">
 						Gruppi statici di continuità, soccorritori e batterie per ogni
 						applicazione. Centro assistenza autorizzato per marchi italiani.
 					</p>
 				</div>
-				<div class="section">
-					<div class="section-label">Gamma UPS</div>
-					<div class="section-title">Il giusto UPS per ogni applicazione</div>
-					<div class="cards">
-						<div class="card">
-							<div class="card-icon">🏠</div>
-							<h3>UPS Interattivi</h3>
-							<p>
-								Per uso personale e home office. Piccole potenze, protezione da
-								sbalzi di tensione, filtro EMI/RFI integrato.
-							</p>
-							<div class="card-tags">
-								<span class="tag">500–3000 VA</span
-								><span class="tag">Sinusoidale</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon blue">💼</div>
-							<h3>On-Line LP</h3>
-							<p>
-								Piccole potenze per uso Home &amp; Small Office. Doppia
-								conversione, uscita sinusoidale pura, zero transfer time.
-							</p>
-							<div class="card-tags">
-								<span class="tag">1–3 kVA</span
-								><span class="tag accent">On-Line</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon amber">🖥️</div>
-							<h3>On-Line MP-TL</h3>
-							<p>
-								Small Office &amp; Professional senza trasformatore d'uscita.
-								Alta efficienza, forma compatta, ideale per server.
-							</p>
-							<div class="card-tags">
-								<span class="tag">1–10 kVA</span
-								><span class="tag">Trasformerless</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon">⚙️</div>
-							<h3>On-Line MP-WT</h3>
-							<p>
-								Con trasformatore d'uscita per carichi critici. Maggiore
-								robustezza e isolamento galvanico garantito.
-							</p>
-							<div class="card-tags">
-								<span class="tag">1–10 kVA</span
-								><span class="tag">Con trasformatore</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon red">🏭</div>
-							<h3>Astrid — UPS di Potenza</h3>
-							<p>
-								Tutta la gamma per uso professionale e industriale. Soluzioni
-								per ogni esigenza di continuità, anche trifase.
-							</p>
-							<div class="card-tags">
-								<span class="tag accent">Industriale</span
-								><span class="tag">10–400 kVA</span
-								><span class="tag">Trifase</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon">🚨</div>
-							<h3>Soccorritori</h3>
-							<p>
-								Sistemi di emergenza per illuminazione di sicurezza e carichi
-								critici. Adatti a strutture pubbliche e industriali.
-							</p>
-							<div class="card-tags">
-								<span class="tag">Emergenza</span><span class="tag">IP65</span>
-							</div>
-						</div>
-					</div>
-				</div>
+			</div>
 
-				<div class="section" style="border-top: 1px solid var(--border)">
-					<div class="section-label">Batterie</div>
-					<div class="section-title">
-						Gamma CSB — Alta qualità, alta efficienza
-					</div>
-					<p class="section-desc">
-						Forniamo una vasta gamma di batterie CSB di qualità eccellente per
-						UPS, Soccorritori e Stazioni d'Energia. Ricaricabili, altamente
-						efficienti, a prova di perdite.
-					</p>
-					<table class="prod-table">
-						<thead>
-							<tr>
-								<th>Serie</th>
-								<th>Applicazione</th>
-								<th>Capacità / Potenza</th>
-								<th>Vita di progetto</th>
-								<th>Cicli di scarica</th>
-								<th>Tipo</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>GP Series</td>
-								<td>Uso generico / UPS</td>
-								<td>4,5 — 100 Ah</td>
-								<td>5 anni standby</td>
-								<td>&gt; 260 al 100%</td>
-								<td><span class="badge badge-green">VRLA AGM</span></td>
-							</tr>
-							<tr>
-								<td>HR Series</td>
-								<td>UPS alta efficienza</td>
-								<td>21 — 120 W/cell</td>
-								<td>3–5 anni</td>
-								<td>&gt; 260 al 100%</td>
-								<td><span class="badge badge-blue">High Rate</span></td>
-							</tr>
-							<tr>
-								<td>UPS Series</td>
-								<td>UPS scarica rapida</td>
-								<td>40 — 96,7 W/cell</td>
-								<td>5 anni standby</td>
-								<td>&gt; 260 al 100%</td>
-								<td><span class="badge badge-amber">Thin Plate</span></td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="container section">
+				<p class="label">Gamma UPS</p>
+				<h2 class="title">Il giusto UPS per ogni applicazione</h2>
+				<div class="card-grid">
+					<article class="card">
+						<div class="card-icon">🏠</div>
+						<h3 class="card-title">UPS Interattivi</h3>
+						<p class="card-body">
+							Per uso personale e home office. Piccole potenze, protezione da
+							sbalzi di tensione, filtro EMI/RFI integrato.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">500–3000 VA</li>
+							<li class="tag">Sinusoidale</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon blue">💼</div>
+						<h3 class="card-title">On-Line LP</h3>
+						<p class="card-body">
+							Piccole potenze per uso Home &amp; Small Office. Doppia
+							conversione, uscita sinusoidale pura, zero transfer time.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">1–3 kVA</li>
+							<li class="tag accent">On-Line</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon amber">🖥️</div>
+						<h3 class="card-title">On-Line MP-TL</h3>
+						<p class="card-body">
+							Small Office &amp; Professional senza trasformatore d'uscita. Alta
+							efficienza, forma compatta, ideale per server.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">1–10 kVA</li>
+							<li class="tag">Trasformerless</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon">⚙️</div>
+						<h3 class="card-title">On-Line MP-WT</h3>
+						<p class="card-body">
+							Con trasformatore d'uscita per carichi critici. Maggiore
+							robustezza e isolamento galvanico garantito.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">1–10 kVA</li>
+							<li class="tag">Con trasformatore</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon red">🏭</div>
+						<h3 class="card-title">UPS di Potenza</h3>
+						<p class="card-body">
+							Tutta la gamma per uso professionale e industriale. Soluzioni per
+							ogni esigenza di continuità, anche trifase.
+						</p>
+						<ul class="tag-list">
+							<li class="tag accent">Industriale</li>
+							<li class="tag">10–400 kVA</li>
+							<li class="tag">Trifase</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon">🚨</div>
+						<h3 class="card-title">Soccorritori</h3>
+						<p class="card-body">
+							Sistemi di emergenza per illuminazione di sicurezza e carichi
+							critici. Adatti a strutture pubbliche e industriali.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">Emergenza</li>
+							<li class="tag">IP65</li>
+						</ul>
+					</article>
 				</div>
 			</div>
-		</div>
 
-		<!-- ==================== SICUREZZA ==================== -->
-		<div id="page-sicurezza" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Sicurezza
-					</div>
-					<h1>🛡️ Sicurezza</h1>
-					<p>
+			<div class="container section">
+				<p class="label">Batterie</p>
+				<h2 class="title">Gamma CSB — Alta qualità, alta efficienza</h2>
+				<p class="subtitle">
+					Forniamo una vasta gamma di batterie CSB di qualità eccellente per
+					UPS, Soccorritori e Stazioni d'Energia. Ricaricabili, altamente
+					efficienti, a prova di perdite.
+				</p>
+				<table class="data-table">
+					<thead>
+						<tr>
+							<th>Serie</th>
+							<th>Applicazione</th>
+							<th>Capacità / Potenza</th>
+							<th>Vita di progetto</th>
+							<th>Cicli di scarica</th>
+							<th>Tipo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>GP Series</td>
+							<td>Uso generico / UPS</td>
+							<td>4,5 — 100 Ah</td>
+							<td>5 anni standby</td>
+							<td>&gt; 260 al 100%</td>
+							<td><span class="badge badge-green">VRLA AGM</span></td>
+						</tr>
+						<tr>
+							<td>HR Series</td>
+							<td>UPS alta efficienza</td>
+							<td>21 — 120 W/cell</td>
+							<td>3–5 anni</td>
+							<td>&gt; 260 al 100%</td>
+							<td><span class="badge badge-blue">High Rate</span></td>
+						</tr>
+						<tr>
+							<td>UPS Series</td>
+							<td>UPS scarica rapida</td>
+							<td>40 — 96,7 W/cell</td>
+							<td>5 anni standby</td>
+							<td>&gt; 260 al 100%</td>
+							<td><span class="badge badge-amber">Thin Plate</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</main>
+
+		<!-- ══════════════════════════════════════════════════════ SICUREZZA (hidden) -->
+		<main id="page-sicurezza" class="page">
+			<div class="page-header">
+				<div class="container">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a data-page="home" href="#">Home</a><span>›</span
+						><span>Sicurezza</span>
+					</nav>
+					<h1 class="page-title">🛡️ Sicurezza</h1>
+					<p class="page-desc">
 						Sistemi antintrusione e videosorveglianza professionali per
 						residenziale, commerciale e industriale.
 					</p>
 				</div>
-				<div class="section">
-					<div class="section-label">Antintrusione</div>
-					<div class="section-title">
-						Jablotron 100 — La rivoluzione senza fili
-					</div>
-					<p
-						style="
-							color: var(--text2);
-							line-height: 1.8;
-							margin-bottom: 2rem;
-							font-size: 0.92rem;
-							max-width: 680px;
-						"
-					>
-						Il sistema di allarme
-						<strong style="color: var(--accent)">Jablotron 100</strong> è
-						rivoluzionario: wireless, telecomandato, espandibile e facilmente
-						configurabile. Indicato per residenziale, punti vendita, uffici,
-						magazzini e officine. Può comunicare intrusione, incendio, emergenza
-						medica, rapina o altri rischi.
-					</p>
-					<div class="cards">
-						<div class="card">
-							<div class="card-icon blue">📡</div>
-							<h3>Sistema wireless</h3>
-							<p>
-								Nessun cavo da posare. Installazione rapida e non invasiva,
-								ideale per locali in affitto o edifici storici.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon">🏠</div>
-							<h3>Domotica integrata</h3>
-							<p>
-								Gestione di dispositivi elettrici, riscaldamento,
-								apertura/chiusura porte e finestre tramite sensori di movimento
-								o telecomandi.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon amber">📱</div>
-							<h3>Comunicazione remota</h3>
-							<p>
-								Notifiche push, SMS e chiamata su smartphone. Gestione da app
-								dedicata da qualsiasi luogo.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon red">🔥</div>
-							<h3>Antincendio</h3>
-							<p>
-								Rilevatori di fumo e calore integrabili nel sistema. Allarme
-								incendio con notifica immediata.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="section" style="border-top: 1px solid var(--border)">
-					<div class="section-label">Videosorveglianza</div>
-					<div class="section-title">Hikvision — Leader mondiale nel TVCC</div>
-					<p
-						style="
-							color: var(--text2);
-							line-height: 1.8;
-							margin-bottom: 2rem;
-							font-size: 0.92rem;
-							max-width: 680px;
-						"
-					>
-						Sistemi di videosorveglianza professionali con telecamere IP,
-						DVR/NVR e sistemi di archiviazione. Soluzioni scalabili per ogni
-						dimensione di impianto.
-					</p>
-					<div class="specs-grid">
-						<div class="spec-item">
-							<label>Risoluzione</label><span>Da HD a 4K Ultra HD</span>
-						</div>
-						<div class="spec-item">
-							<label>Visione notturna</label><span>IR fino a 60 mt</span>
-						</div>
-						<div class="spec-item">
-							<label>Archiviazione</label><span>NVR/DVR on-site + Cloud</span>
-						</div>
-						<div class="spec-item">
-							<label>Accesso remoto</label><span>App Hik-Connect</span>
-						</div>
-						<div class="spec-item">
-							<label>AI Detection</label
-							><span>Rilevamento persone/veicoli</span>
-						</div>
-						<div class="spec-item">
-							<label>Protezione</label><span>IP66/IK10 disponibile</span>
-						</div>
-					</div>
+			</div>
+			<div class="container section">
+				<p class="label">Antintrusione</p>
+				<h2 class="title">Jablotron 100 — La rivoluzione senza fili</h2>
+				<p class="about-body">
+					Il sistema di allarme <span class="accent">Jablotron 100</span> è
+					rivoluzionario: wireless, telecomandato, espandibile e facilmente
+					configurabile. Indicato per residenziale, punti vendita, uffici,
+					magazzini e officine. Può comunicare intrusione, incendio, emergenza
+					medica, rapina o altri rischi.
+				</p>
+				<div class="card-grid" style="margin-top: 2rem">
+					<article class="card">
+						<div class="card-icon blue">📡</div>
+						<h3 class="card-title">Sistema wireless</h3>
+						<p class="card-body">
+							Nessun cavo da posare. Installazione rapida e non invasiva, ideale
+							per locali in affitto o edifici storici.
+						</p>
+					</article>
+					<article class="card">
+						<div class="card-icon">🏠</div>
+						<h3 class="card-title">Domotica integrata</h3>
+						<p class="card-body">
+							Gestione di dispositivi elettrici, riscaldamento,
+							apertura/chiusura porte e finestre tramite sensori di movimento o
+							telecomandi.
+						</p>
+					</article>
+					<article class="card">
+						<div class="card-icon amber">📱</div>
+						<h3 class="card-title">Comunicazione remota</h3>
+						<p class="card-body">
+							Notifiche push, SMS e chiamata su smartphone. Gestione da app
+							dedicata da qualsiasi luogo.
+						</p>
+					</article>
+					<article class="card">
+						<div class="card-icon red">🔥</div>
+						<h3 class="card-title">Antincendio</h3>
+						<p class="card-body">
+							Rilevatori di fumo e calore integrabili nel sistema. Allarme
+							incendio con notifica immediata.
+						</p>
+					</article>
 				</div>
 			</div>
-		</div>
+		</main>
 
-		<!-- ==================== NETWORKING ==================== -->
-		<div id="page-networking" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Networking
-					</div>
-					<h1>🌐 Networking</h1>
-					<p>
-						Infrastrutture di rete complete: armadi rack, apparati attivi,
-						cablaggio strutturato e accessori professionali.
-					</p>
-				</div>
-				<div class="section">
-					<div class="cards">
-						<div class="card">
-							<div class="card-icon">🗄️</div>
-							<h3>Armadi Rack</h3>
-							<p>
-								Armadi open-frame e chiusi, wall-mount e floor-standing.
-								Soluzioni per datacenter, server room e ambienti industriali.
-							</p>
-							<div class="card-tags">
-								<span class="tag">6U — 42U</span><span class="tag">IP55</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon blue">🔌</div>
-							<h3>Apparati Attivi</h3>
-							<p>
-								Switch managed e unmanaged, access point, router e firewall per
-								reti aziendali ad alte prestazioni.
-							</p>
-							<div class="card-tags">
-								<span class="tag">Gigabit</span><span class="tag">PoE</span
-								><span class="tag">VLAN</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon amber">🔗</div>
-							<h3>Cablaggio Strutturato</h3>
-							<p>
-								Impianti Cat.5e, Cat.6 e Cat.6A certificati. Patch panel,
-								keystone, canaline e tutti gli accessori di installazione.
-							</p>
-							<div class="card-tags">
-								<span class="tag accent">Certificato</span
-								><span class="tag">Cat.6A</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon">📦</div>
-							<h3>Accessori</h3>
-							<p>
-								Patch cord, adattatori, organizer, PDU da rack, ventole e tutto
-								ciò che serve per un'installazione professionale.
-							</p>
-							<div class="card-tags">
-								<span class="tag">PDU</span><span class="tag">KVM</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- ==================== LED ==================== -->
-		<div id="page-led" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Illuminazione LED
-					</div>
-					<h1>💡 Illuminazione LED</h1>
-					<p>
-						Lampade professionali 88Light — alta qualità, alte prestazioni,
-						ottimo rapporto tecnico/economico.
-					</p>
-				</div>
-				<div class="section">
-					<div class="section-label">88Light</div>
-					<div class="section-title">Qualità senza compromessi</div>
-					<p
-						style="
-							color: var(--text2);
-							line-height: 1.8;
-							margin-bottom: 2rem;
-							font-size: 0.92rem;
-							max-width: 680px;
-						"
-					>
-						Dopo anni di test e selezione, abbiamo scelto
-						<strong style="color: var(--accent)">88Light</strong> come partner
-						per l'illuminazione LED. Un'azienda poco conosciuta in Italia ma con
-						standard qualitativi elevatissimi, che investe in ricerca e sviluppo
-						piuttosto che in pubblicità.
-					</p>
-					<div class="cards">
-						<div class="card">
-							<div class="card-icon amber">🏗️</div>
-							<h3>Costruzione premium</h3>
-							<p>
-								Corpo interamente in alluminio pressofuso. Bulbi di protezione
-								in vetro temperato. Attacchi precisi di prima qualità.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon">🧪</div>
-							<h3>Testato in laboratorio</h3>
-							<p>
-								Ogni prodotto viene testato meccanicamente e elettricamente nel
-								nostro laboratorio prima della vendita.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon blue">📊</div>
-							<h3>Caratteristiche dettagliate</h3>
-							<p>
-								Schede tecniche complete con dati fotometrici, spettro cromatico
-								e curva di vita utile per ogni prodotto.
-							</p>
-						</div>
-						<div class="card">
-							<div class="card-icon red">🌱</div>
-							<h3>Efficienza energetica</h3>
-							<p>
-								Risparmio energetico fino all'80% rispetto alle lampade
-								tradizionali. Vita media superiore a 50.000 ore.
-							</p>
-						</div>
-					</div>
-					<div class="specs-grid" style="margin-top: 2rem">
-						<div class="spec-item">
-							<label>Materiale corpo</label><span>Alluminio pressofuso</span>
-						</div>
-						<div class="spec-item">
-							<label>Protezione ottica</label><span>Vetro temperato</span>
-						</div>
-						<div class="spec-item">
-							<label>Vita media</label><span>&gt; 50.000 ore</span>
-						</div>
-						<div class="spec-item">
-							<label>Risparmio energetico</label><span>Fino all'80%</span>
-						</div>
-						<div class="spec-item">
-							<label>Indice CRI</label><span>&gt; 80 (Ra)</span>
-						</div>
-						<div class="spec-item">
-							<label>Supporto tecnico</label><span>Attivo e diretto</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- ==================== INDUSTRIA ==================== -->
-		<div id="page-industria" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Industria
-					</div>
-					<h1>🏭 Industria</h1>
-					<p>
+		<!-- ══════════════════════════════════════════════════════ INDUSTRIA -->
+		<main id="page-industria" class="page">
+			<div class="page-header">
+				<div class="container">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a data-page="home" href="#">Home</a><span>›</span
+						><span>Industria</span>
+					</nav>
+					<h1 class="page-title">🏭 Industria</h1>
+					<p class="page-desc">
 						Soluzioni industriali in collaborazione con aziende leader del
 						territorio campano.
 					</p>
 				</div>
-				<div class="section">
-					<div class="section-label">Il servizio</div>
-					<div class="section-title">Prodotti e soluzioni di alta qualità</div>
-					<p
-						style="
-							color: var(--text2);
-							line-height: 1.8;
-							margin-bottom: 2.5rem;
-							font-size: 0.92rem;
-							max-width: 680px;
-						"
-					>
-						Con la collaborazione di aziende leader nel settore industriale — un
-						pregio del nostro territorio — possiamo offrire prodotti e soluzioni
-						di alta qualità per il comparto produttivo.
-					</p>
-					<div class="cards">
-						<div class="card">
-							<div class="card-icon">📦</div>
-							<h3>Confezionamento</h3>
-							<p>
-								Macchine e sistemi per il confezionamento automatico di prodotti
-								alimentari, farmaceutici e industriali.
-							</p>
-							<div class="card-tags">
-								<span class="tag">Provin</span
-								><span class="tag">Automazione</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon amber">🏷️</div>
-							<h3>Imballaggio ed Etichettatura</h3>
-							<p>
-								Linee complete per imballaggio e sistemi di etichettatura
-								automatica. Integrazione con sistemi gestionali esistenti.
-							</p>
-							<div class="card-tags">
-								<span class="tag">CSE</span><span class="tag">Barcode</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon blue">🚿</div>
-							<h3>Lavaggio Industriale</h3>
-							<p>
-								Impianti di lavaggio professionale per caseifici, industrie
-								alimentari e manifatturiero. Risparmio idrico e energetico.
-							</p>
-							<div class="card-tags">
-								<span class="tag accent">Vema</span
-								><span class="tag">HACCP</span>
-							</div>
-						</div>
-						<div class="card">
-							<div class="card-icon red">⚙️</div>
-							<h3>Automazione &amp; Controllo</h3>
-							<p>
-								Sistemi di controllo e automazione per processi industriali.
-								PLC, HMI e supervisione SCADA.
-							</p>
-							<div class="card-tags">
-								<span class="tag">PLC</span><span class="tag">SCADA</span>
-							</div>
-						</div>
-					</div>
-					<div
-						style="
-							margin-top: 2.5rem;
-							padding: 1.5rem;
-							background: var(--bg3);
-							border: 1px solid var(--border);
-							border-radius: var(--r2);
-						"
-					>
-						<p
-							style="
-								font-size: 0.78rem;
-								color: var(--text3);
-								text-transform: uppercase;
-								letter-spacing: 0.08em;
-								font-weight: 700;
-								margin-bottom: 1rem;
-							"
-						>
-							Partner industriali
+			</div>
+			<div class="container section">
+				<p class="label">Il servizio</p>
+				<h2 class="title">Prodotti e soluzioni di alta qualità</h2>
+				<p class="about-body">
+					Con la collaborazione di aziende leader nel settore industriale — un
+					pregio del nostro territorio — possiamo offrire prodotti e soluzioni
+					di alta qualità per il comparto produttivo.
+				</p>
+				<div class="card-grid" style="margin-top: 2rem">
+					<article class="card">
+						<div class="card-icon">📦</div>
+						<h3 class="card-title">Confezionamento</h3>
+						<p class="card-body">
+							Macchine e sistemi per il confezionamento automatico di prodotti
+							alimentari, farmaceutici e industriali.
 						</p>
-						<div
-							style="
-								display: flex;
-								gap: 2rem;
-								flex-wrap: wrap;
-								align-items: center;
-							"
-						>
-							<div
-								style="font-weight: 700; font-size: 1.1rem; color: var(--text2)"
-							>
-								Provin
-							</div>
-							<div
-								style="font-weight: 700; font-size: 1.1rem; color: var(--text2)"
-							>
-								CSE
-							</div>
-							<div
-								style="
-									font-weight: 700;
-									font-size: 1.1rem;
-									color: var(--accent);
-								"
-							>
-								Vema
-							</div>
-						</div>
-					</div>
+						<ul class="tag-list">
+							<li class="tag">Provin</li>
+							<li class="tag">Automazione</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon amber">🏷️</div>
+						<h3 class="card-title">Imballaggio ed Etichettatura</h3>
+						<p class="card-body">
+							Linee complete per imballaggio e sistemi di etichettatura
+							automatica. Integrazione con sistemi gestionali esistenti.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">CSE</li>
+							<li class="tag">Barcode</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon blue">🚿</div>
+						<h3 class="card-title">Lavaggio Industriale</h3>
+						<p class="card-body">
+							Impianti di lavaggio professionale per caseifici, industrie
+							alimentari e manifatturiero. Risparmio idrico e energetico.
+						</p>
+						<ul class="tag-list">
+							<li class="tag accent">Vema</li>
+							<li class="tag">HACCP</li>
+						</ul>
+					</article>
+					<article class="card">
+						<div class="card-icon red">⚙️</div>
+						<h3 class="card-title">Automazione &amp; Controllo</h3>
+						<p class="card-body">
+							Sistemi di controllo e automazione per processi industriali. PLC,
+							HMI e supervisione SCADA.
+						</p>
+						<ul class="tag-list">
+							<li class="tag">PLC</li>
+							<li class="tag">SCADA</li>
+						</ul>
+					</article>
+				</div>
+				<div class="partner-box">
+					<p class="partner-box-label">Partner industriali</p>
+					<ul class="partner-list">
+						<li class="partner-name">Provin</li>
+						<li class="partner-name">CSE</li>
+						<li class="partner-name featured">Vema</li>
+					</ul>
 				</div>
 			</div>
-		</div>
+		</main>
 
-		<!-- ==================== SERVICE ==================== -->
-		<div id="page-service" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Service
-					</div>
-					<h1>🔧 Service &amp; Assistenza</h1>
-					<p>
+		<!-- ══════════════════════════════════════════════════════ SERVICE -->
+		<main id="page-service" class="page">
+			<div class="page-header">
+				<div class="container">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a data-page="home" href="#">Home</a><span>›</span
+						><span>Service</span>
+					</nav>
+					<h1 class="page-title">🔧 Service &amp; Assistenza</h1>
+					<p class="page-desc">
 						Centro assistenza tecnico autorizzato per marchi UPS italiani.
 						Centro-Sud Italia.
 					</p>
 				</div>
-				<div class="section">
-					<div class="section-label">Calcolo autonomia</div>
-					<div class="section-title">Quanto dura la mia batteria?</div>
-					<p
-						style="
-							color: var(--text2);
-							font-size: 0.9rem;
-							line-height: 1.7;
-							margin-bottom: 1.5rem;
-							max-width: 600px;
-						"
-					>
-						Il calcolo dell'autonomia dipende dalla potenza collegata, dal
-						rendimento dell'UPS e dalla capacità delle batterie. Usa questo
-						calcolatore come guida orientativa.
-					</p>
-					<div class="calc-container">
-						<div class="calc-row">
-							<label>Potenza carico (W)</label>
-							<input
-								type="range"
-								id="r-pot"
-								min="50"
-								max="2000"
-								step="50"
-								value="300"
-								oninput="calcAutonomia()"
-							/>
-							<output id="o-pot">300 W</output>
+			</div>
+
+			<div class="container section">
+				<p class="label">Calcolo autonomia</p>
+				<h2 class="title">Quanto dura la mia batteria?</h2>
+				<p
+					class="muted"
+					style="
+						font-size: 0.9rem;
+						line-height: 1.7;
+						margin-bottom: 1.5rem;
+						max-width: 600px;
+					"
+				>
+					Il calcolo dell'autonomia dipende dalla potenza collegata, dal
+					rendimento dell'UPS e dalla capacità delle batterie. Usa questo
+					calcolatore come guida orientativa.
+				</p>
+				<div class="calc-box">
+					<div class="calc-row">
+						<label for="r-pot">Potenza carico (W)</label>
+						<input
+							type="range"
+							id="r-pot"
+							min="50"
+							max="2000"
+							step="50"
+							value="300"
+						/>
+						<output id="o-pot">300 W</output>
+					</div>
+					<div class="calc-row">
+						<label for="r-ah">Capacità batteria (Ah)</label>
+						<input
+							type="range"
+							id="r-ah"
+							min="0"
+							max="14"
+							step="1"
+							value="1"
+							list="ah-steps"
+						/>
+						<datalist id="ah-steps">
+							<option value="0"></option>
+							<option value="1"></option>
+							<option value="2"></option>
+							<option value="3"></option>
+							<option value="4"></option>
+							<option value="5"></option>
+							<option value="6"></option>
+							<option value="7"></option>
+							<option value="8"></option>
+							<option value="9"></option>
+							<option value="10"></option>
+							<option value="11"></option>
+							<option value="12"></option>
+							<option value="13"></option>
+							<option value="14"></option>
+						</datalist>
+						<output id="o-ah">7 Ah</output>
+					</div>
+					<div class="calc-row">
+						<label for="r-nb">N° batterie</label>
+						<input type="range" id="r-nb" min="1" max="8" step="1" value="2" />
+						<output id="o-nb">2</output>
+					</div>
+					<div class="calc-row">
+						<label for="r-ren">Rendimento UPS (%)</label>
+						<input
+							type="range"
+							id="r-ren"
+							min="60"
+							max="99"
+							step="1"
+							value="85"
+						/>
+						<output id="o-ren">85%</output>
+					</div>
+					<div class="calc-result">
+						<div class="calc-val">
+							<p class="calc-num" id="c-min">—</p>
+							<p class="calc-lbl">Autonomia (min)</p>
 						</div>
-						<div class="calc-row">
-							<label>Capacità batteria (Ah)</label>
-							<input
-								type="range"
-								id="r-ah"
-								min="0"
-								max="14"
-								step="1"
-								value="1"
-								oninput="calcAutonomia()"
-								list="ah-steps"
-							/>
-							<datalist id="ah-steps">
-								<option value="0"></option>
-								<option value="1"></option>
-								<option value="2"></option>
-								<option value="3"></option>
-								<option value="4"></option>
-								<option value="5"></option>
-								<option value="6"></option>
-								<option value="7"></option>
-								<option value="8"></option>
-								<option value="9"></option>
-								<option value="10"></option>
-								<option value="11"></option>
-								<option value="12"></option>
-								<option value="13"></option>
-								<option value="17"></option>
-							</datalist>
-							<output id="o-ah">7 Ah</output>
-						</div>
-						<div class="calc-row">
-							<label>N° batterie</label>
-							<input
-								type="range"
-								id="r-nb"
-								min="1"
-								max="8"
-								step="1"
-								value="2"
-								oninput="calcAutonomia()"
-							/>
-							<output id="o-nb">2</output>
-						</div>
-						<div class="calc-row">
-							<label>Rendimento UPS (%)</label>
-							<input
-								type="range"
-								id="r-ren"
-								min="60"
-								max="99"
-								step="1"
-								value="85"
-								oninput="calcAutonomia()"
-							/>
-							<output id="o-ren">85%</output>
-						</div>
-						<div class="calc-result">
-							<div class="calc-val">
-								<div class="num" id="c-min">-</div>
-								<div class="lbl">Autonomia (min)</div>
-							</div>
-							<div class="calc-val">
-								<div class="num" id="c-ore" style="color: var(--accent2)">
-									-
-								</div>
-								<div class="lbl">Autonomia (h:mm)</div>
-							</div>
+						<div class="calc-val">
+							<p class="calc-num blue" id="c-ore">—</p>
+							<p class="calc-lbl">Autonomia (h:mm)</p>
 						</div>
 					</div>
-					<p style="margin-top: 1rem; font-size: 0.78rem; color: var(--text3)">
-						⚠️ Stima indicativa. L'autonomia reale dipende anche dalla
-						temperatura, dall'età delle batterie e dalla tipologia del carico.
-						Contattateci per un dimensionamento preciso.
-					</p>
 				</div>
+				<p class="calc-note">
+					⚠️ Stima indicativa. L'autonomia reale dipende anche dalla
+					temperatura, dall'età delle batterie e dalla tipologia del carico.
+					Contattateci per un dimensionamento preciso.
+				</p>
+			</div>
 
-				<div class="section" style="border-top: 1px solid var(--border)">
-					<div class="section-label">FAQ tecnica</div>
-					<div class="section-title">Domande frequenti</div>
-					<div style="max-width: 700px">
-						<div class="accord-item">
-							<button class="accord-btn" onclick="toggleAccord(this)">
-								Cos'è la sigla "7Ah/20H" sulle batterie?
-								<span class="accord-icon">+</span>
-							</button>
-							<div class="accord-body">
-								La capacità di 7Ah/20H significa che la batteria eroga 7 Ampere
-								in 20 ore, ovvero 0,35A ogni ora — NON 7 Ampere all'ora. Con
-								P=V×I: una singola batteria da 12V con carico di 4,2W (che
-								assorbe 0,35A) garantisce 20 ore di autonomia.
-							</div>
+			<div class="container section">
+				<p class="label">FAQ tecnica</p>
+				<h2 class="title">Domande frequenti</h2>
+				<div style="max-width: 700px">
+					<div class="accord-item">
+						<button class="accord-btn" type="button">
+							Cos'è la sigla "7Ah/20H" sulle batterie?<span class="accord-icon"
+								>+</span
+							>
+						</button>
+						<div class="accord-body">
+							La capacità di 7Ah/20H significa che la batteria eroga 7 Ampere in
+							20 ore, ovvero 0,35A ogni ora — NON 7 Ampere all'ora. Con P=V×I:
+							una singola batteria da 12V con carico di 4,2W (che assorbe 0,35A)
+							garantisce 20 ore di autonomia.
 						</div>
-						<div class="accord-item">
-							<button class="accord-btn" onclick="toggleAccord(this)">
-								Perché l'UPS consigliato ha più potenza del mio carico?
-								<span class="accord-icon">+</span>
-							</button>
-							<div class="accord-body">
-								Per garantire la corretta autonomia richiesta, l'UPS deve
-								contenere un numero sufficiente di batterie. Ad esempio,
-								un'autonomia di 1 ora su 100W richiede un UPS con almeno due
-								batterie 7-9Ah. Il modello KK da 1000VA è ideale per questo
-								caso.
-							</div>
+					</div>
+					<div class="accord-item">
+						<button class="accord-btn" type="button">
+							Perché l'UPS consigliato ha più potenza del mio carico?<span
+								class="accord-icon"
+								>+</span
+							>
+						</button>
+						<div class="accord-body">
+							Per garantire la corretta autonomia richiesta, l'UPS deve
+							contenere un numero sufficiente di batterie. Ad esempio,
+							un'autonomia di 1 ora su 100W richiede un UPS con almeno due
+							batterie 7-9Ah. Il modello KK da 1000VA è ideale per questo caso.
 						</div>
-						<div class="accord-item">
-							<button class="accord-btn" onclick="toggleAccord(this)">
-								Qual è la differenza tra UPS Online e Interattivo?
-								<span class="accord-icon">+</span>
-							</button>
-							<div class="accord-body">
-								L'UPS Online (doppia conversione) fornisce sempre corrente
-								tramite le batterie: zero transfer time, uscita sinusoidale
-								pura, protezione totale. L'UPS Interattivo è più economico ma ha
-								un transfer time di 4-8ms e filtra solo i disturbi.
-							</div>
+					</div>
+					<div class="accord-item">
+						<button class="accord-btn" type="button">
+							Qual è la differenza tra UPS Online e Interattivo?<span
+								class="accord-icon"
+								>+</span
+							>
+						</button>
+						<div class="accord-body">
+							L'UPS Online (doppia conversione) fornisce sempre corrente tramite
+							le batterie: zero transfer time, uscita sinusoidale pura,
+							protezione totale. L'UPS Interattivo è più economico ma ha un
+							transfer time di 4-8ms e filtra solo i disturbi.
 						</div>
-						<div class="accord-item">
-							<button class="accord-btn" onclick="toggleAccord(this)">
-								Con quale frequenza vanno sostituite le batterie?
-								<span class="accord-icon">+</span>
-							</button>
-							<div class="accord-body">
-								Le batterie AGM per UPS hanno una vita di 3-5 anni in standby.
-								Si consiglia la sostituzione preventiva ogni 3-4 anni o quando
-								l'autonomia scende sotto il 70% del valore nominale. Temperature
-								elevate riducono significativamente la vita utile.
-							</div>
+					</div>
+					<div class="accord-item">
+						<button class="accord-btn" type="button">
+							Con quale frequenza vanno sostituite le batterie?<span
+								class="accord-icon"
+								>+</span
+							>
+						</button>
+						<div class="accord-body">
+							Le batterie AGM per UPS hanno una vita di 3-5 anni in standby. Si
+							consiglia la sostituzione preventiva ogni 3-4 anni o quando
+							l'autonomia scende sotto il 70% del valore nominale. Temperature
+							elevate riducono significativamente la vita utile.
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 
-		<!-- ==================== CONTATTI ==================== -->
-		<div id="page-contatti" class="page">
-			<div style="padding-top: 64px">
-				<div class="page-header">
-					<div class="breadcrumb">
-						<a href="#" onclick="showPage('home')">Home</a> › Contatti
-					</div>
-					<h1>📍 Dove siamo &amp; Contatti</h1>
-					<p>
+		<!-- ══════════════════════════════════════════════════════ CONTATTI -->
+		<main id="page-contatti" class="page">
+			<div class="page-header">
+				<div class="container">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a data-page="home" href="#">Home</a><span>›</span
+						><span>Contatti</span>
+					</nav>
+					<h1 class="page-title">📍 Dove siamo &amp; Contatti</h1>
+					<p class="page-desc">
 						Tutte le informazioni per raggiungerci e contattarci. Siamo a
 						Pagani.
 					</p>
 				</div>
-				<div class="section">
-					<div class="contact-grid">
-						<div>
-							<div style="display: flex; flex-direction: column; gap: 1.5rem">
-								<div>
-									<div
-										class="contact-block h3"
-										style="
-											font-size: 0.75rem;
-											color: var(--text3);
-											text-transform: uppercase;
-											letter-spacing: 0.08em;
-											font-weight: 700;
-											margin-bottom: 1rem;
-										"
-									>
-										Sede Operativa — Laboratorio &amp; Showroom
-									</div>
-									<div class="contact-row">
-										<svg
-											width="18"
-											height="18"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="1.5"
-										>
-											<path
-												d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-											/>
-										</svg>
-										<p><strong>Via Alcide De Gasperi, 41/B </strong>Pagani</p>
-									</div>
+			</div>
 
-									<div class="contact-row">
-										<svg
-											width="18"
-											height="18"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="1.5"
-										>
-											<path
-												d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.4 12 19.79 19.79 0 0 1 1.15 3.38 2 2 0 0 1 3.12 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.61 5.61l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-											/>
-										</svg>
-										<p><strong>Service (urgenze)</strong>+39 340 47 65 994</p>
-									</div>
-
-									<div class="contact-row">
-										<svg
-											width="18"
-											height="18"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="1.5"
-										>
-											<path
-												d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-											/>
-											<polyline points="22,6 12,13 2,6" />
-										</svg>
-										<p>
-											<strong>Mail</strong>
-											service@ets.campania.it info@ets.campania.it
-										</p>
-									</div>
-								</div>
-								<div
-									style="
-										padding: 1.25rem;
-										background: var(--bg3);
-										border: 1px solid var(--border);
-										border-radius: var(--r);
-									"
-								>
-									<p
-										style="
-											font-size: 0.75rem;
-											color: var(--text3);
-											font-weight: 700;
-											text-transform: uppercase;
-											letter-spacing: 0.06em;
-											margin-bottom: 0.75rem;
-										"
-									>
-										Sede Legale
-									</p>
-									<p
-										style="
-											font-size: 0.88rem;
-											color: var(--text2);
-											line-height: 1.6;
-										"
-									>
-										E.T.S. di Arcangelo Rosolia &amp; C. sas<br />Via A. De
-										Gasperi, 41/B<br />84016 Pagani (SA)
-									</p>
-								</div>
-							</div>
-						</div>
+			<div class="container section">
+				<div class="contact-grid">
+					<div style="display: flex; flex-direction: column; gap: 1.5rem">
 						<div>
-							<div class="map-placeholder">
+							<p class="contact-section-title">
+								Sede Operativa — Laboratorio &amp; Showroom
+							</p>
+							<div class="contact-row">
 								<svg
-									width="40"
-									height="40"
+									width="18"
+									height="18"
 									viewBox="0 0 24 24"
 									fill="none"
 									stroke="currentColor"
 									stroke-width="1.5"
+									aria-hidden="true"
 								>
 									<path
 										d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
 									/>
 								</svg>
-								<span>Via A. De Gasperi, 41/B — Pagani</span>
-								<a
-									href="https://maps.app.goo.gl/oweVGmNQLJSszuR47"
-									target="_blank"
-									style="
-										color: var(--accent);
-										font-size: 0.8rem;
-										text-decoration: none;
-										border: 1px solid rgba(0, 200, 150, 0.3);
-										padding: 6px 14px;
-										border-radius: 20px;
-										margin-top: 8px;
-									"
-									>Apri in Google Maps →</a
-								>
+								<p><strong>Via Alcide De Gasperi, 41/B</strong>Pagani (SA)</p>
 							</div>
-							<div style="margin-top: 1.5rem">
-								<p
-									style="
-										font-size: 0.8rem;
-										font-weight: 700;
-										color: var(--text3);
-										text-transform: uppercase;
-										letter-spacing: 0.06em;
-										margin-bottom: 1rem;
-									"
+							<div class="contact-row">
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.5"
+									aria-hidden="true"
 								>
-									Invia una richiesta rapida
+									<path
+										d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.4 12 19.79 19.79 0 0 1 1.15 3.38 2 2 0 0 1 3.12 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.61 5.61l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+									/>
+								</svg>
+								<p><strong>Service (urgenze)</strong>+39 340 47 65 994</p>
+							</div>
+							<div class="contact-row">
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.5"
+									aria-hidden="true"
+								>
+									<path
+										d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+									/>
+									<polyline points="22,6 12,13 2,6" />
+								</svg>
+								<p>
+									<strong>Email</strong>service@ets.campania.it —
+									info@ets.campania.it
 								</p>
-								<div
-									style="display: flex; flex-direction: column; gap: 0.75rem"
-								>
-									<div class="form-field">
-										<label>Nome e cognome</label
-										><input type="text" placeholder="Mario Rossi" />
-									</div>
-									<div class="form-field">
-										<label>Email</label
-										><input type="email" placeholder="info@azienda.it" />
-									</div>
-									<div class="form-field">
-										<label>Telefono</label
-										><input type="tel" placeholder="089 ..." />
-									</div>
-									<div class="form-field">
-										<label>Tipo di richiesta</label>
-										<select>
-											<option>Informazioni commerciali</option>
-											<option>Richiesta assistenza tecnica</option>
-											<option>Calcolo autonomia UPS</option>
-											<option>Offerta prodotto specifico</option>
-											<option>Registrazione prodotto</option>
-										</select>
-									</div>
-									<div class="form-field">
-										<label>Messaggio</label
-										><textarea
-											placeholder="Descrivi la tua esigenza..."
-										></textarea>
-									</div>
-									<button
-										class="btn btn-primary"
-										style="
-											width: 100%;
-											justify-content: center;
-											font-size: 0.88rem;
-										"
-										onclick="
-											alert(
-												'Modulo demo — in produzione invierebbe la richiesta a info@ets.campania.it',
-											)
-										"
-									>
-										Invia richiesta →
-									</button>
+							</div>
+						</div>
+						<div class="info-box">
+							<p class="info-box-label">Sede Legale</p>
+							<p>
+								E.T.S. di Arcangelo Rosolia &amp; C. sas<br />Via A. De Gasperi,
+								41/B<br />84016 Pagani (SA)
+							</p>
+						</div>
+					</div>
+
+					<div style="display: flex; flex-direction: column; gap: 1.5rem">
+						<div class="map-box">
+							<svg
+								width="40"
+								height="40"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								aria-hidden="true"
+							>
+								<path
+									d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+								/>
+							</svg>
+							<span>Via A. De Gasperi, 41/B — Pagani</span>
+							<a
+								class="map-link"
+								href="https://maps.app.goo.gl/oweVGmNQLJSszuR47"
+								target="_blank"
+								rel="noopener"
+								>Apri in Google Maps →</a
+							>
+						</div>
+						<div>
+							<p class="form-title">Invia una richiesta rapida</p>
+							<div class="form-stack">
+								<div class="form-field">
+									<label for="f-nome">Nome e cognome</label
+									><input
+										id="f-nome"
+										type="text"
+										placeholder="Mario Rossi"
+										autocomplete="name"
+									/>
 								</div>
+								<div class="form-field">
+									<label for="f-email">Email</label
+									><input
+										id="f-email"
+										type="email"
+										placeholder="info@azienda.it"
+										autocomplete="email"
+									/>
+								</div>
+								<div class="form-field">
+									<label for="f-tel">Telefono</label
+									><input
+										id="f-tel"
+										type="tel"
+										placeholder="089 ..."
+										autocomplete="tel"
+									/>
+								</div>
+								<div class="form-field">
+									<label for="f-tipo">Tipo di richiesta</label>
+									<select id="f-tipo">
+										<option>Informazioni commerciali</option>
+										<option>Richiesta assistenza tecnica</option>
+										<option>Calcolo autonomia UPS</option>
+										<option>Offerta prodotto specifico</option>
+										<option>Registrazione prodotto</option>
+									</select>
+								</div>
+								<div class="form-field">
+									<label for="f-msg">Messaggio</label
+									><textarea
+										id="f-msg"
+										placeholder="Descrivi la tua esigenza..."
+									></textarea>
+								</div>
+								<button
+									class="btn btn-primary btn-full"
+									id="form-submit"
+									type="button"
+								>
+									Invia richiesta →
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 
+		<!-- ── Footer ── -->
 		<footer>
-			<p>
+			<p class="footer-copy">
 				© 2015–2026 E.T.S. di Arcangelo Rosolia &amp; C. sas — P.IVA 04251630655
 				— Tutti i diritti riservati
 			</p>
-			<div class="footer-nav">
-				<a href="#" onclick="showPage('home')">Home</a>
-				<a href="#" onclick="showPage('energia')">Energia</a>
-				<a href="#" onclick="showPage('service')">Service</a>
-				<a href="#" onclick="showPage('contatti')">Contatti</a>
-			</div>
+			<nav class="footer-nav" aria-label="Footer">
+				<a data-page="home" href="#">Home</a>
+				<a data-page="energia" href="#">Energia</a>
+				<a data-page="service" href="#">Service</a>
+				<a data-page="contatti" href="#">Contatti</a>
+			</nav>
 		</footer>
 
 		<script>
+			/* ── Navigation ── */
+			const AH_VALS = [
+				5, 7, 9, 11, 12, 17, 18, 26, 40, 45, 55, 65, 80, 100, 200,
+			];
+
 			function showPage(id) {
 				document
 					.querySelectorAll(".page")
 					.forEach((p) => p.classList.remove("active"));
 				document
-					.querySelectorAll(".nav-links a")
+					.querySelectorAll('[id^="nav-"], [id^="drawer-"]')
 					.forEach((a) => a.classList.remove("active"));
-				const pg = document.getElementById("page-" + id);
-				if (pg) {
-					pg.classList.add("active");
-					window.scrollTo(0, 0);
-				}
-				const nav = document.getElementById("nav-" + id);
-				if (nav) nav.classList.add("active");
+				document.getElementById("page-" + id)?.classList.add("active");
+				document.getElementById("nav-" + id)?.classList.add("active");
+				document.getElementById("drawer-" + id)?.classList.add("active");
+				window.scrollTo(0, 0);
 			}
 
-			function toggleAccord(btn) {
-				const body = btn.nextElementSibling;
-				const icon = btn.querySelector(".accord-icon");
-				const isOpen = body.classList.contains("open");
-				document
-					.querySelectorAll(".accord-body")
-					.forEach((b) => b.classList.remove("open"));
-				document
-					.querySelectorAll(".accord-icon")
-					.forEach((i) => (i.textContent = "+"));
-				if (!isOpen) {
-					body.classList.add("open");
-					icon.textContent = "−";
-				}
+			function closeDrawer() {
+				const drawer = document.getElementById("nav-drawer");
+				const burger = document.getElementById("nav-burger");
+				drawer.classList.remove("open");
+				burger.classList.remove("open");
+				burger.setAttribute("aria-expanded", "false");
+				drawer.setAttribute("aria-hidden", "true");
+				document.body.style.overflow = "";
 			}
 
+			/* Delegate all [data-page] clicks */
+			document.addEventListener("click", (e) => {
+				const el = e.target.closest("[data-page]");
+				if (!el) return;
+				e.preventDefault();
+				const id = el.dataset.page;
+				showPage(id);
+				closeDrawer();
+			});
+
+			/* Keyboard nav on card[role=button] */
+			document.addEventListener("keydown", (e) => {
+				const el = e.target.closest(".card[data-page]");
+				if (el && (e.key === "Enter" || e.key === " ")) {
+					e.preventDefault();
+					showPage(el.dataset.page);
+				}
+			});
+
+			/* Hamburger */
+			document.getElementById("nav-burger").addEventListener("click", () => {
+				const drawer = document.getElementById("nav-drawer");
+				const burger = document.getElementById("nav-burger");
+				const open = drawer.classList.toggle("open");
+				burger.classList.toggle("open", open);
+				burger.setAttribute("aria-expanded", String(open));
+				drawer.setAttribute("aria-hidden", String(!open));
+				document.body.style.overflow = open ? "hidden" : "";
+			});
+
+			/* ── Accordion ── */
+			document.querySelectorAll(".accord-btn").forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const body = btn.nextElementSibling;
+					const icon = btn.querySelector(".accord-icon");
+					const isOpen = body.classList.contains("open");
+					document
+						.querySelectorAll(".accord-body")
+						.forEach((b) => b.classList.remove("open"));
+					document
+						.querySelectorAll(".accord-icon")
+						.forEach((i) => (i.textContent = "+"));
+					if (!isOpen) {
+						body.classList.add("open");
+						icon.textContent = "−";
+					}
+				});
+			});
+
+			/* ── Calculator ── */
 			function calcAutonomia() {
 				const pot = +document.getElementById("r-pot").value;
-				const AH_VALS = [
-					5, 7, 9, 11, 12, 17, 18, 26, 40, 45, 55, 65, 80, 100, 200,
-				];
 				const ah = AH_VALS[+document.getElementById("r-ah").value];
 				const nb = +document.getElementById("r-nb").value;
 				const ren = +document.getElementById("r-ren").value / 100;
@@ -1979,16 +2002,23 @@
 				document.getElementById("o-nb").textContent = nb;
 				document.getElementById("o-ren").textContent =
 					Math.round(ren * 100) + "%";
-				const capTot = ah * nb * 12 * ren;
-				const ore = capTot / pot;
-				const minTot = Math.round(ore * 60);
-				const h = Math.floor(minTot / 60);
-				const m = minTot % 60;
-				document.getElementById("c-min").textContent = minTot;
+				const min = Math.round(((ah * nb * 12 * ren) / pot) * 60);
+				document.getElementById("c-min").textContent = min;
 				document.getElementById("c-ore").textContent =
-					h + ":" + String(m).padStart(2, "0");
+					Math.floor(min / 60) + ":" + String(min % 60).padStart(2, "0");
 			}
+
+			["r-pot", "r-ah", "r-nb", "r-ren"].forEach((id) =>
+				document.getElementById(id).addEventListener("input", calcAutonomia),
+			);
 			calcAutonomia();
+
+			/* ── Form submit ── */
+			document.getElementById("form-submit").addEventListener("click", () => {
+				alert(
+					"Modulo demo — in produzione invierebbe la richiesta a info@ets.campania.it",
+				);
+			});
 		</script>
 	</body>
 </html>
