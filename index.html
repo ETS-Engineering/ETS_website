@@ -164,6 +164,61 @@ footer .footer-nav a:hover{color:var(--accent)}
 /* ANIM */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .page.active .hero,.page.active .section,.page.active .page-header{animation:fadeUp .35s ease}
+
+/* HAMBURGER */
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--text);flex-direction:column;gap:5px;margin-left:auto}
+.nav-burger span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px;transition:all .2s}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* MOBILE DRAWER */
+.nav-drawer{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:99;background:var(--bg);overflow-y:auto;padding:1rem 1.25rem 2rem;border-top:1px solid var(--border)}
+.nav-drawer.open{display:block}
+.nav-drawer a{display:block;color:var(--text2);text-decoration:none;font-size:1rem;font-weight:500;padding:14px 12px;border-radius:var(--r);border-bottom:1px solid var(--border);transition:all .15s}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a:hover,.nav-drawer a.active{color:var(--accent);background:var(--bg3)}
+.nav-drawer .drawer-cta{margin-top:1rem;background:var(--accent);color:#000;font-weight:700;text-align:center;border-radius:var(--r);border-bottom:none}
+
+@media(max-width:768px){
+  nav{padding:0 1.25rem;gap:0}
+  .nav-links,.nav-cta{display:none}
+  .nav-burger{display:flex}
+
+  .hero{grid-template-columns:1fr;gap:2rem;padding:2.5rem 1.25rem 2rem}
+  .hero-visual{aspect-ratio:auto}
+  .hero-stat-grid{grid-template-columns:1fr 1fr;gap:.75rem}
+  .h-stat-num{font-size:1.5rem}
+
+  .section{padding:2.5rem 1.25rem}
+  .page-header{padding:2rem 1.25rem 1.5rem}
+
+  .cards{grid-template-columns:1fr}
+  .specs-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+
+  .prod-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+
+  .calc-container{padding:1.25rem}
+  .calc-row{flex-wrap:wrap;gap:.5rem}
+  .calc-row label{flex:0 0 100%;font-size:0.8rem}
+  .calc-row input[type=range]{flex:1}
+  .calc-row output{min-width:60px}
+
+  .brand-inner{gap:1.5rem}
+
+  footer{flex-direction:column;align-items:flex-start;padding:1.5rem 1.25rem;gap:.75rem}
+  footer .footer-nav{flex-wrap:wrap;gap:1rem}
+
+  .hero-btns .btn{flex:1;justify-content:center}
+}
+
+@media(max-width:400px){
+  .specs-grid{grid-template-columns:1fr}
+  .hero-stat-grid{grid-template-columns:1fr 1fr}
+  .h-stat-num{font-size:1.3rem}
+}
 </style>
 </head>
 <body>
@@ -184,7 +239,22 @@ footer .footer-nav a:hover{color:var(--accent)}
     <a href="#" onclick="showPage('contatti')" id="nav-contatti">Contatti</a>
   </div>
   <a class="nav-cta" href="#" onclick="showPage('contatti');return false">Richiedi offerta →</a>
+  <button class="nav-burger" id="nav-burger" aria-label="Apri menu" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-drawer" id="nav-drawer">
+  <a href="#" onclick="showPage('home');closeDrawer()" id="drawer-home" class="active">🏠 Home</a>
+  <a href="#" onclick="showPage('energia');closeDrawer()" id="drawer-energia">⚡ Energia &amp; UPS</a>
+  <a href="#" onclick="showPage('sicurezza');closeDrawer()" id="drawer-sicurezza">🛡️ Sicurezza</a>
+  <a href="#" onclick="showPage('networking');closeDrawer()" id="drawer-networking">🌐 Networking</a>
+  <a href="#" onclick="showPage('led');closeDrawer()" id="drawer-led">💡 LED</a>
+  <a href="#" onclick="showPage('industria');closeDrawer()" id="drawer-industria">🏭 Industria</a>
+  <a href="#" onclick="showPage('service');closeDrawer()" id="drawer-service">🔧 Service</a>
+  <a href="#" onclick="showPage('contatti');closeDrawer()" id="drawer-contatti">📍 Contatti</a>
+  <a href="#" onclick="showPage('contatti');closeDrawer()" class="drawer-cta">Richiedi offerta →</a>
+</div>
 
 <!-- ==================== HOME ==================== -->
 <div id="page-home" class="page active">
@@ -755,10 +825,29 @@ footer .footer-nav a:hover{color:var(--accent)}
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.nav-drawer a').forEach(a => a.classList.remove('active'));
   const pg = document.getElementById('page-'+id);
   if(pg){ pg.classList.add('active'); window.scrollTo(0,0); }
   const nav = document.getElementById('nav-'+id);
   if(nav) nav.classList.add('active');
+  const drawer = document.getElementById('drawer-'+id);
+  if(drawer) drawer.classList.add('active');
+}
+
+function toggleDrawer() {
+  const d = document.getElementById('nav-drawer');
+  const b = document.getElementById('nav-burger');
+  d.classList.toggle('open');
+  b.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+}
+
+function closeDrawer() {
+  const d = document.getElementById('nav-drawer');
+  const b = document.getElementById('nav-burger');
+  d.classList.remove('open');
+  b.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function toggleAccord(btn) {
