@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="common/logo.png" type="image/x-icon" />
-		<title>E.T.S. sas — Energia, Tecnologia, Automazione </title>
+		<title>E.T.S. sas — Energia, Tecnologia, Automazione</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link
 			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
@@ -1019,6 +1019,286 @@
 					font-size: 1.3rem;
 				}
 			}
+			/* ── Hero visual ── */
+			.hero-visual {
+				aspect-ratio: auto !important;
+				padding: 0.75rem !important;
+			}
+			.stat-grid {
+				grid-template-rows: 200px 200px;
+				height: auto;
+				gap: 0.75rem;
+			}
+			.stat-card {
+				padding: 0 !important;
+				overflow: hidden;
+				position: relative;
+				height: 200px;
+				border-radius: var(--r);
+				background: var(--bg3);
+			}
+
+			/* ── Carousel ── */
+			.carousel {
+				position: relative;
+				width: 100%;
+				height: 200px;
+				overflow: hidden;
+				border-radius: var(--r);
+			}
+			.carousel-track {
+				display: flex;
+				height: 200px;
+				transition: transform 0.5s ease;
+				will-change: transform;
+			}
+			.carousel-slide {
+				min-width: 100%;
+				width: 100%;
+				height: 200px;
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				background: var(--bg2);
+				flex-shrink: 0;
+				overflow: hidden;
+			}
+			.carousel-slide img {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center center;
+				opacity: 0.95;
+				display: block;
+				padding: 16px;
+			}
+			.carousel-caption {
+				position: relative;
+				z-index: 1;
+				background: linear-gradient(transparent, rgb(0 0 0 / 0.8));
+				width: 100%;
+				padding: 0.5rem 0.75rem;
+			}
+			.carousel-caption p {
+				font-size: 0.72rem;
+				font-weight: 600;
+				color: #fff;
+				line-height: 1.3;
+				margin: 0;
+			}
+			.carousel-caption span {
+				font-size: 0.63rem;
+				color: var(--accent);
+				font-weight: 500;
+			}
+			.carousel-dots {
+				position: absolute;
+				bottom: 6px;
+				right: 8px;
+				display: flex;
+				gap: 4px;
+				z-index: 2;
+			}
+			.carousel-dot {
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background: rgb(255 255 255 / 0.35);
+				border: none;
+				padding: 0;
+				cursor: pointer;
+				transition: background 0.2s;
+				flex-shrink: 0;
+			}
+			.carousel-dot.active {
+				background: var(--accent);
+			}
+			.carousel-btn {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				background: rgb(0 0 0 / 0.45);
+				border: none;
+				color: #fff;
+				width: 26px;
+				height: 26px;
+				border-radius: 50%;
+				cursor: pointer;
+				font-size: 1rem;
+				line-height: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				z-index: 2;
+				transition: background 0.15s;
+			}
+			.carousel-btn:hover {
+				background: rgb(0 200 150 / 0.65);
+			}
+			.carousel-btn.prev {
+				left: 6px;
+			}
+			.carousel-btn.next {
+				right: 6px;
+			}
+
+			/* ── Industry tile ── */
+			.industry-tile {
+				width: 100%;
+				height: 200px;
+				position: relative;
+				overflow: hidden;
+				border-radius: var(--r);
+				background: var(--bg2);
+				display: flex;
+				align-items: flex-end;
+			}
+			.industry-tile img {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center center;
+				opacity: 0.92;
+				display: block;
+				padding: 16px;
+			}
+			.industry-tile-placeholder {
+				width: 100%;
+				height: 200px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0.4rem;
+				color: var(--text3);
+				font-size: 0.72rem;
+				text-align: center;
+				padding: 1rem;
+			}
+			.industry-tile-caption {
+				position: relative;
+				z-index: 1;
+				background: linear-gradient(transparent, rgb(0 0 0 / 0.8));
+				width: 100%;
+				padding: 0.5rem 0.75rem;
+			}
+			.industry-tile-caption p {
+				font-size: 0.72rem;
+				font-weight: 600;
+				color: #fff;
+				margin: 0;
+			}
+			.industry-tile-caption span {
+				font-size: 0.63rem;
+				color: var(--accent);
+			}
+
+			/* ── Blog tiles ── */
+			.blog-tile {
+				display: flex;
+				width: 100%;
+				height: 200px;
+				overflow: hidden;
+				border-radius: var(--r);
+				background: var(--bg3);
+				cursor: pointer;
+				text-decoration: none;
+			}
+			.blog-tile:hover .blog-tile-info {
+				background: var(--card);
+			}
+			.blog-tile-img {
+				width: 42%;
+				flex-shrink: 0;
+				overflow: hidden;
+				background: var(--bg2);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.blog-tile-img img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+			.blog-tile-img-placeholder {
+				font-size: 2rem;
+				opacity: 0.3;
+			}
+			.blog-tile-info {
+				flex: 1;
+				padding: 0.75rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.3rem;
+				background: var(--bg3);
+				transition: background 0.15s;
+				overflow: hidden;
+				min-width: 0;
+			}
+			.blog-tile-cat {
+				font-size: 0.6rem;
+				font-weight: 700;
+				color: var(--accent);
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+			}
+			.blog-tile-title {
+				font-size: 0.76rem;
+				font-weight: 600;
+				color: var(--text);
+				line-height: 1.3;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.blog-tile-body {
+				font-size: 0.68rem;
+				color: var(--text2);
+				line-height: 1.5;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+				flex: 1;
+			}
+			.blog-tile-date {
+				font-size: 0.6rem;
+				color: var(--text3);
+			}
+
+			/* ── Form feedback ── */
+			.form-feedback {
+				padding: 0.75rem 1rem;
+				border-radius: var(--r);
+				font-size: 0.85rem;
+				font-weight: 500;
+				display: none;
+				margin-top: 0.5rem;
+			}
+			.form-feedback.success {
+				background: rgb(0 200 150 / 0.12);
+				color: var(--accent);
+				border: 1px solid rgb(0 200 150 / 0.25);
+				display: block;
+			}
+			.form-feedback.error {
+				background: rgb(255 77 77 / 0.12);
+				color: var(--red);
+				border: 1px solid rgb(255 77 77 / 0.25);
+				display: block;
+			}
+			.btn-loading {
+				opacity: 0.6;
+				pointer-events: none;
+			}
 		</style>
 	</head>
 
@@ -1085,7 +1365,7 @@
 					<h1 class="hero-heading">
 						Energia e<br />
 						<span class="accent">Tecnologia</span><br />
-						per la tua azienda
+						per aziende ed industrie
 					</h1>
 					<p class="hero-body">
 						Dal 2006 E.T.S. sas fornisce soluzioni professionali per UPS,
@@ -1104,46 +1384,105 @@
 				</div>
 				<div class="hero-visual" aria-hidden="true">
 					<div class="stat-grid">
+						<!-- ① Carosello UPS — immagini da Supabase Storage -->
 						<div class="stat-card">
-							<div>
-								<p class="stat-num green">2006</p>
-								<p class="stat-label">Anno di fondazione</p>
-							</div>
-							<div class="stat-bar">
-								<div class="stat-bar-fill" style="width: 100%"></div>
+							<div class="carousel" id="ups-carousel">
+								<div class="carousel-track" id="ups-track"></div>
+								<button
+									class="carousel-btn prev"
+									id="ups-prev"
+									aria-label="Precedente"
+								>
+									&#8249;
+								</button>
+								<button
+									class="carousel-btn next"
+									id="ups-next"
+									aria-label="Successivo"
+								>
+									&#8250;
+								</button>
+								<div class="carousel-dots" id="ups-dots"></div>
 							</div>
 						</div>
+
+						<!-- ② Foto servizi industria — singola immagine da Supabase Storage -->
 						<div class="stat-card">
-							<div>
-								<p class="stat-num blue">4+</p>
-								<p class="stat-label">Brand autorizzati UPS</p>
-							</div>
-							<div class="stat-bar">
-								<div
-									class="stat-bar-fill"
-									style="width: 80%; background: var(--accent2)"
-								></div>
+							<div class="industry-tile" id="industry-tile">
+								<div class="industry-tile-placeholder" id="industry-ph">
+									<svg
+										width="28"
+										height="28"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.5"
+									>
+										<rect x="3" y="3" width="18" height="18" rx="2" />
+										<path d="M3 9h18M9 21V9" />
+									</svg>
+									<span>Caricamento…</span>
+								</div>
+								<div class="industry-tile-caption">
+									<p>Soluzioni Industriali</p>
+									<span>Confezionamento · Etichettatura · Lavaggio</span>
+								</div>
 							</div>
 						</div>
+
+						<!-- ③ Blog post più recente — da Supabase DB -->
 						<div class="stat-card">
-							<div>
-								<p class="stat-num amber">7</p>
-								<p class="stat-label">Settori di attività</p>
-							</div>
-							<div class="stat-bar">
-								<div
-									class="stat-bar-fill"
-									style="width: 70%; background: var(--amber)"
-								></div>
+							<div
+								class="blog-tile"
+								id="blog-tile-1"
+								role="button"
+								tabindex="0"
+								aria-label="Vai al post"
+							>
+								<div class="blog-tile-img" id="blog-img-1">
+									<div class="blog-tile-img-placeholder">📰</div>
+								</div>
+								<div class="blog-tile-info">
+									<span class="blog-tile-cat" id="blog-cat-1">In arrivo</span>
+									<p class="blog-tile-title" id="blog-title-1">
+										Il nostro blog è in preparazione
+									</p>
+									<p class="blog-tile-body" id="blog-body-1">
+										Presto pubblicheremo lavori, curiosità del settore e
+										aggiornamenti tecnici.
+									</p>
+									<span class="blog-tile-date" id="blog-date-1"
+										>E.T.S. sas</span
+									>
+								</div>
 							</div>
 						</div>
+
+						<!-- ④ Blog post secondo — da Supabase DB -->
 						<div class="stat-card">
-							<div>
-								<p class="stat-num green">H24</p>
-								<p class="stat-label">Supporto service</p>
-							</div>
-							<div class="stat-bar">
-								<div class="stat-bar-fill" style="width: 100%"></div>
+							<div
+								class="blog-tile"
+								id="blog-tile-2"
+								role="button"
+								tabindex="0"
+								aria-label="Vai al post"
+							>
+								<div class="blog-tile-img" id="blog-img-2">
+									<div class="blog-tile-img-placeholder">🔧</div>
+								</div>
+								<div class="blog-tile-info">
+									<span class="blog-tile-cat" id="blog-cat-2">In arrivo</span>
+									<p class="blog-tile-title" id="blog-title-2">
+										Installazioni, manutenzioni e curiosità tecniche
+									</p>
+									<p class="blog-tile-body" id="blog-body-2">
+										Seguici per rimanere aggiornato sulle nostre attività e sui
+										trend del settore.
+									</p>
+									<span class="blog-tile-date" id="blog-date-2"
+										>E.T.S. sas</span
+									>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1870,11 +2209,9 @@
 								<div class="form-field">
 									<label for="f-tipo">Tipo di richiesta</label>
 									<select id="f-tipo">
-										<option>Informazioni commerciali</option>
 										<option>Richiesta assistenza tecnica</option>
-										<option>Calcolo autonomia UPS</option>
-										<option>Offerta prodotto specifico</option>
-										<option>Registrazione prodotto</option>
+										<option>Richiesta autonomia UPS</option>
+										<option>Richiesta prodotto automazione</option>
 									</select>
 								</div>
 								<div class="form-field">
@@ -1901,7 +2238,7 @@
 		<!-- ── Footer ── -->
 		<footer>
 			<p class="footer-copy">
-				© 2015–2026 E.T.S. di Arcangelo Rosolia &amp; C. sas — P.IVA 04251630655
+				© 2015-2026 E.T.S. di Arcangelo Rosolia &amp; C. sas — P.IVA 04251630655
 				— Tutti i diritti riservati
 			</p>
 			<nav class="footer-nav" aria-label="Footer">
@@ -2012,11 +2349,210 @@
 			);
 			calcAutonomia();
 
-			/* ── Form submit ── */
-			document.getElementById("form-submit").addEventListener("click", () => {
-				alert(
-					"Modulo demo — in produzione invierebbe la richiesta a info@ets.campania.it",
-				);
+			/* ── EmailJS init ─────────────────────────────────────────────────────
+			   Sostituisci i tre valori con quelli del tuo account emailjs.com
+			   ─────────────────────────────────────────────────────────────────── */
+			const EMAILJS_PUBLIC_KEY = "LA_TUA_PUBLIC_KEY";
+			const EMAILJS_SERVICE_ID = "IL_TUO_SERVICE_ID";
+			const EMAILJS_TEMPLATE_ID = "IL_TUO_TEMPLATE_ID";
+			if (typeof emailjs !== "undefined") {
+				emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+			}
+
+			/* ── Form submit con EmailJS ── */
+			document
+				.getElementById("form-submit")
+				.addEventListener("click", async () => {
+					const btn = document.getElementById("form-submit");
+					const feedback = document.getElementById("form-feedback");
+					const nome = document.getElementById("f-nome").value.trim();
+					const email = document.getElementById("f-email").value.trim();
+					const tel = document.getElementById("f-tel").value.trim();
+					const tipo = document.getElementById("f-tipo").value;
+					const msg = document.getElementById("f-msg").value.trim();
+
+					feedback.className = "form-feedback";
+					feedback.textContent = "";
+
+					if (!nome || !email || !msg) {
+						feedback.className = "form-feedback error";
+						feedback.textContent = "Compila almeno nome, email e messaggio.";
+						return;
+					}
+
+					btn.classList.add("btn-loading");
+					btn.textContent = "Invio in corso…";
+
+					if (
+						typeof emailjs === "undefined" ||
+						EMAILJS_SERVICE_ID === "IL_TUO_SERVICE_ID"
+					) {
+						feedback.className = "form-feedback error";
+						feedback.textContent =
+							"EmailJS non ancora configurato. Scrivici a info@ets.campania.it";
+						btn.classList.remove("btn-loading");
+						btn.textContent = "Invia richiesta →";
+						return;
+					}
+					try {
+						await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+							nome,
+							email,
+							telefono: tel || "—",
+							tipo,
+							messaggio: msg,
+						});
+						feedback.className = "form-feedback success";
+						feedback.textContent =
+							"✓ Richiesta inviata! Ti risponderemo al più presto.";
+						["f-nome", "f-email", "f-tel", "f-msg"].forEach((id) => {
+							document.getElementById(id).value = "";
+						});
+					} catch (err) {
+						feedback.className = "form-feedback error";
+						feedback.textContent =
+							"Errore nell'invio. Scrivici a info@ets.campania.it";
+						console.error("EmailJS error:", err);
+					} finally {
+						btn.classList.remove("btn-loading");
+						btn.textContent = "Invia richiesta →";
+					}
+				});
+
+			/* ══════════════════════════════════════════════════════════════════════
+			   CAROSELLO UPS — file statici
+			   ──────────────────────────────────────────────────────────────────────
+			   Aggiungi qui una voce per ogni foto che metti nella cartella img/ups/
+			   I file vanno nominati esattamente come indicato in "src".
+			   ══════════════════════════════════════════════════════════════════════ */
+			/* Per ogni slide puoi aggiungere pos: 'top center' / 'bottom center' /
+			   'center 30%' ecc. per aggiustare il punto di fuoco dell'immagine */
+			const UPS_SLIDES = [
+				{
+					src: "img/ups/MATRIX.png",
+					title: "G-TEC MATRIX",
+					sub: "3–6 kVA · Tower",
+					pos: "center center",
+				},
+				{
+					src: "img/ups/MATRIX-RT.png",
+					title: "G-TEC MATRIX RT",
+					sub: "6–10 kVA · Rack/Tower",
+					pos: "center center",
+				},
+				{
+					src: "img/ups/NOVA.png",
+					title: "G-TEC NOVA",
+					sub: "10–15–20 kVA · Cabinet",
+					pos: "center center",
+				},
+				{
+					src: "img/ups/LP120.png",
+					title: "G-TEC LP120",
+					sub: "1000 VA · Tower",
+					pos: "center center",
+				},
+				{
+					src: "img/ups/TP130N.png",
+					title: "G-TEC TP130N",
+					sub: "Rack/Tower",
+					pos: "center center",
+				},
+				{
+					src: "img/ups/SHIELD.png",
+					title: "G-TEC SHIELD",
+					sub: "Tower",
+					pos: "center center",
+				},
+			];
+
+			/* ══════════════════════════════════════════════════════════════════════
+			   FOTO INDUSTRIA — file statico
+			   Metti la foto in img/industria/copertina.jpg
+			   (o cambia il percorso qui sotto)
+			   ══════════════════════════════════════════════════════════════════════ */
+			const INDUSTRIA_SRC = "img/industria/copertina.jpg";
+
+			/* ── Init carosello UPS ── */
+			let upsIndex = 0,
+				upsTimer;
+			const upsTotal = UPS_SLIDES.length;
+
+			function upsGoTo(n) {
+				upsIndex = (n + upsTotal) % upsTotal;
+				document.getElementById("ups-track").style.transform =
+					`translateX(-${upsIndex * 100}%)`;
+				document
+					.querySelectorAll("#ups-dots .carousel-dot")
+					.forEach((d, i) => d.classList.toggle("active", i === upsIndex));
+			}
+			function startUpsAuto() {
+				upsTimer = setInterval(() => upsGoTo(upsIndex + 1), 3500);
+			}
+
+			function initCarouselUPS() {
+				const track = document.getElementById("ups-track");
+				const dots = document.getElementById("ups-dots");
+				track.innerHTML = "";
+				dots.innerHTML = "";
+
+				UPS_SLIDES.forEach(({ src, title, sub, pos = "center center" }, i) => {
+					const slide = document.createElement("div");
+					slide.className = "carousel-slide";
+					slide.innerHTML = `
+						<img src="${src}" alt="${title}" loading="lazy">
+						<div class="carousel-caption"><p>${title}</p><span>${sub}</span></div>`;
+					track.appendChild(slide);
+
+					const dot = document.createElement("button");
+					dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+					dot.setAttribute("aria-label", `Slide ${i + 1}`);
+					dot.addEventListener("click", () => {
+						clearInterval(upsTimer);
+						upsGoTo(i);
+						startUpsAuto();
+					});
+					dots.appendChild(dot);
+				});
+
+				document.getElementById("ups-prev").addEventListener("click", () => {
+					clearInterval(upsTimer);
+					upsGoTo(upsIndex - 1);
+					startUpsAuto();
+				});
+				document.getElementById("ups-next").addEventListener("click", () => {
+					clearInterval(upsTimer);
+					upsGoTo(upsIndex + 1);
+					startUpsAuto();
+				});
+
+				startUpsAuto();
+			}
+
+			/* ── Init foto industria ── */
+			function initIndustria() {
+				const tile = document.getElementById("industry-tile");
+				const ph = document.getElementById("industry-ph");
+				const img = document.createElement("img");
+				img.src = INDUSTRIA_SRC;
+				img.alt = "Servizi Industria";
+				img.style.cssText =
+					"position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center center;opacity:.92;padding:16px;";
+				img.onerror = () => img.remove(); // se il file non esiste lascia placeholder
+				tile.insertBefore(img, tile.firstChild);
+				img.onload = () => ph.remove();
+			}
+
+			/* ── Blog preview (placeholder — si attiverà con Supabase) ── */
+			function initBlogPreview() {
+				/* predisposto */
+			}
+
+			/* ── Avvia tutto ── */
+			document.addEventListener("DOMContentLoaded", () => {
+				initCarouselUPS();
+				initIndustria();
+				initBlogPreview();
 			});
 		</script>
 	</body>
