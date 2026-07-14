@@ -2496,7 +2496,7 @@
 				track.innerHTML = "";
 				dots.innerHTML = "";
 
-				UPS_SLIDES.forEach(({ src, title, sub, pos = "center center" }, i) => {
+				UPS_SLIDES.forEach(({ src, title, sub, pos }, i) => {
 					const slide = document.createElement("div");
 					slide.className = "carousel-slide";
 					slide.innerHTML = `
