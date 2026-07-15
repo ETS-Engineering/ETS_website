@@ -10,18 +10,10 @@
 			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
 			rel="stylesheet"
 		/>
-
-		<!-- Vercel Web Analytics -->
-		<script>
-			window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-		</script>
-		<script defer src="/_vercel/insights/script.js"></script>
-
-		<!-- Vercel Speed Insights -->
-		<script>
-			window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-		</script>
-		<script defer src="/_vercel/speed-insights/script.js"></script>
+		<script
+			type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+		></script>
 
 		<style>
 			/* ── Reset ── */
@@ -1106,6 +1098,55 @@
 				color: var(--accent);
 				font-weight: 500;
 			}
+			.carousel-overlay {
+				position: absolute;
+				inset: 0;
+				z-index: 3;
+				background: rgb(0 0 0 / 0);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				transition: background 0.25s;
+				border-radius: var(--r);
+				text-decoration: none;
+			}
+			.carousel-overlay:hover {
+				background: rgb(0 0 0 / 0.58);
+			}
+			.carousel-overlay-inner {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.4rem;
+				opacity: 0;
+				transform: translateY(6px);
+				transition:
+					opacity 0.25s,
+					transform 0.25s;
+				text-align: center;
+				padding: 0.75rem;
+				pointer-events: none;
+			}
+			.carousel-overlay:hover .carousel-overlay-inner {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.carousel-overlay-label {
+				font-size: 0.82rem;
+				font-weight: 700;
+				color: #fff;
+				letter-spacing: 0.04em;
+			}
+			.carousel-overlay-cta {
+				font-size: 0.68rem;
+				color: var(--accent);
+				font-weight: 600;
+				border: 1px solid rgb(0 200 150 / 0.5);
+				padding: 4px 12px;
+				border-radius: 20px;
+				margin-top: 0.25rem;
+			}
 			.carousel-dots {
 				position: absolute;
 				bottom: 6px;
@@ -1144,7 +1185,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				z-index: 2;
+				z-index: 4;
 				transition: background 0.15s;
 			}
 			.carousel-btn:hover {
@@ -1400,6 +1441,21 @@
 						<div class="stat-card">
 							<div class="carousel" id="ups-carousel">
 								<div class="carousel-track" id="ups-track"></div>
+								<a
+									class="carousel-overlay"
+									href="#"
+									data-page="energia"
+									aria-label="Vai alla gamma UPS"
+								>
+									<div class="carousel-overlay-inner">
+										<span class="carousel-overlay-label"
+											>⚡ Gamma Prodotti UPS</span
+										>
+										<span class="carousel-overlay-cta"
+											>Scopri tutti i modelli →</span
+										>
+									</div>
+								</a>
 								<button
 									class="carousel-btn prev"
 									id="ups-prev"
@@ -2201,6 +2257,15 @@
 									/>
 								</div>
 								<div class="form-field">
+									<label for="f-azienda">Azienda</label
+									><input
+										id="f-azienda"
+										type="text"
+										placeholder="E.T.S. Srl"
+										autocomplete="Azienda"
+									/>
+								</div>
+								<div class="form-field">
 									<label for="f-email">Email</label
 									><input
 										id="f-email"
@@ -2240,6 +2305,7 @@
 								>
 									Invia richiesta →
 								</button>
+								<div id="form-feedback" class="form-feedback"></div>
 							</div>
 						</div>
 					</div>
@@ -2361,12 +2427,19 @@
 			);
 			calcAutonomia();
 
+			function generaIDRichiesta() {
+				// Genera un numero casuale compreso tra 100000 e 999999
+				const numeroRandom = Math.floor(100000 + Math.random() * 900000);
+				return "ETS-" + numeroRandom;
+			} 
+
 			/* ── EmailJS init ─────────────────────────────────────────────────────
 			   Sostituisci i tre valori con quelli del tuo account emailjs.com
 			   ─────────────────────────────────────────────────────────────────── */
-			const EMAILJS_PUBLIC_KEY = "LA_TUA_PUBLIC_KEY";
-			const EMAILJS_SERVICE_ID = "IL_TUO_SERVICE_ID";
-			const EMAILJS_TEMPLATE_ID = "IL_TUO_TEMPLATE_ID";
+			const EMAILJS_PUBLIC_KEY = "9c3I1eYjxdfm2mlCb";
+			const EMAILJS_SERVICE_ID = "service_8zmscww";
+			const EMAILJS_TEMPLATE_ID = "template_j04plqb";
+
 			if (typeof emailjs !== "undefined") {
 				emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 			}
@@ -2378,6 +2451,7 @@
 					const btn = document.getElementById("form-submit");
 					const feedback = document.getElementById("form-feedback");
 					const nome = document.getElementById("f-nome").value.trim();
+					const azienda = document.getElementById("f-azienda").value.trim();
 					const email = document.getElementById("f-email").value.trim();
 					const tel = document.getElementById("f-tel").value.trim();
 					const tipo = document.getElementById("f-tipo").value;
@@ -2406,9 +2480,13 @@
 						btn.textContent = "Invia richiesta →";
 						return;
 					}
+					const idRichiesta = generaIDRichiesta();
+					console.log(idRichiesta)
 					try {
 						await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+							idRichiesta,
 							nome,
+							azienda,
 							email,
 							telefono: tel || "—",
 							tipo,
@@ -2417,9 +2495,11 @@
 						feedback.className = "form-feedback success";
 						feedback.textContent =
 							"✓ Richiesta inviata! Ti risponderemo al più presto.";
-						["f-nome", "f-email", "f-tel", "f-msg"].forEach((id) => {
-							document.getElementById(id).value = "";
-						});
+						["f-nome", "f-azienda", "f-email", "f-tel", "f-msg"].forEach(
+							(id) => {
+								document.getElementById(id).value = "";
+							},
+						);
 					} catch (err) {
 						feedback.className = "form-feedback error";
 						feedback.textContent =
@@ -2498,6 +2578,7 @@
 					.querySelectorAll("#ups-dots .carousel-dot")
 					.forEach((d, i) => d.classList.toggle("active", i === upsIndex));
 			}
+
 			function startUpsAuto() {
 				upsTimer = setInterval(() => upsGoTo(upsIndex + 1), 3500);
 			}
@@ -2508,7 +2589,7 @@
 				track.innerHTML = "";
 				dots.innerHTML = "";
 
-				UPS_SLIDES.forEach(({ src, title, sub, pos }, i) => {
+				UPS_SLIDES.forEach(({ src, title, sub, pos = "center center" }, i) => {
 					const slide = document.createElement("div");
 					slide.className = "carousel-slide";
 					slide.innerHTML = `
