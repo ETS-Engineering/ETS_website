@@ -19,6 +19,9 @@
 
 # production
 /build
+robots.txt
+sitemap.xml
+package-lock.json
 
 # misc
 .DS_Store
