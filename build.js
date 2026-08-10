@@ -10,7 +10,7 @@ const fs   = require("fs");
 const path = require("path");
 
 const SITE_URL  = "https://ets.campania.it";
-const OG_IMAGE  = `${SITE_URL}/common/og-image.jpg`; 
+const OG_IMAGE  = `${SITE_URL}/common/og-image.jpg`; // crea 1200×630px
 
 // ── Schema.org ───────────────────────────────────────────────────────────
 
@@ -123,9 +123,11 @@ const schemaBreadcrumb = {
 };
 
 // ── Blocco meta da iniettare ─────────────────────────────────────────────
+const TITLE = "E.T.S. sas — UPS, Automazione Industriale e Assistenza Tecnica a Pagani (SA)";
+
 const META_BLOCK = `
 	<!-- ═══ SEO — generato da build.js ═══ -->
-	<title>E.T.S. sas — UPS, Automazione Industriale e Assistenza Tecnica a Pagani (SA)</title>
+	<title>${TITLE}</title>
 	<meta name="description" content="Centro assistenza UPS autorizzato a Pagani (SA). Fornitura, installazione e manutenzione di gruppi di continuità Astrid, Borri, GSC per aziende in Campania. Dal 2006.">
 	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 	<link rel="canonical" href="${SITE_URL}/">
@@ -133,7 +135,7 @@ const META_BLOCK = `
 	<!-- Open Graph -->
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="E.T.S. sas">
-	<meta property="og:title" content="E.T.S. sas — UPS, Automazione Industriale e Assistenza Tecnica a Pagani (SA)">
+	<meta property="og:title" content="${TITLE}">
 	<meta property="og:description" content="Centro assistenza UPS autorizzato a Pagani (SA). Fornitura e manutenzione di gruppi di continuità per aziende in Campania. Dal 2006.">
 	<meta property="og:url" content="${SITE_URL}/">
 	<meta property="og:image" content="${OG_IMAGE}">
@@ -144,7 +146,7 @@ const META_BLOCK = `
 
 	<!-- Twitter / WhatsApp card -->
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="E.T.S. sas — UPS, Automazione Industriale e Assistenza Tecnica a Pagani (SA)">
+	<meta name="twitter:title" content="${TITLE}">
 	<meta name="twitter:description" content="Centro assistenza UPS autorizzato a Pagani. Astrid, Borri, GSC per aziende in Campania.">
 	<meta name="twitter:image" content="${OG_IMAGE}">
 
