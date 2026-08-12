@@ -117,18 +117,21 @@ const schemaBreadcrumb = {
 	"itemListElement": [
 		{ "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
 		{ "@type": "ListItem", "position": 2, "name": "Energia & UPS", "item": `${SITE_URL}/#energia` },
-		{ "@type": "ListItem", "position": 3, "name": "Service & Assistenza", "item": `${SITE_URL}/#service` },
+		{ "@type": "ListItem", "position": 3, "name": "Automazione Industriale", "item": `${SITE_URL}/#industria` },
+		{ "@type": "ListItem", "position": 4, "name": "Service & Assistenza", "item": `${SITE_URL}/#service` },
 		{ "@type": "ListItem", "position": 4, "name": "Contatti", "item": `${SITE_URL}/#contatti` },
 	],
 };
 
 // ── Blocco meta da iniettare ─────────────────────────────────────────────
-const TITLE = "E.T.S. sas — UPS, Automazione Industriale e Assistenza Tecnica a Pagani (SA)";
+const TITLE      = "Assistenza UPS Campania, Salerno, Napoli | Automazioni per aziende | E.T.S. sas";
+const DESC       = "E.T.S. sas — UPS, automazione industriale e assistenza tecnica in Campania. Soluzioni hardware e software per aziende nelle province di Salerno, Napoli, Caserta, Avellino e Benevento.";
+const DESC_SHORT = "UPS e automazione industriale in Campania. Assistenza tecnica per aziende a Salerno, Napoli, Caserta, Avellino e Benevento.";
 
 const META_BLOCK = `
 	<!-- ═══ SEO — generato da build.js ═══ -->
 	<title>${TITLE}</title>
-	<meta name="description" content="Centro assistenza UPS autorizzato a Pagani (SA). Fornitura, installazione e manutenzione di gruppi di continuità Astrid, Borri, GSC per aziende in Campania. Dal 2006.">
+	<meta name="description" content="${DESC}">
 	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 	<link rel="canonical" href="${SITE_URL}/">
 
@@ -136,18 +139,18 @@ const META_BLOCK = `
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="E.T.S. sas">
 	<meta property="og:title" content="${TITLE}">
-	<meta property="og:description" content="Centro assistenza UPS autorizzato a Pagani (SA). Fornitura e manutenzione di gruppi di continuità per aziende in Campania. Dal 2006.">
+	<meta property="og:description" content="${DESC}">
 	<meta property="og:url" content="${SITE_URL}/">
 	<meta property="og:image" content="${OG_IMAGE}">
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="630">
-	<meta property="og:image:alt" content="E.T.S. sas — Centro assistenza UPS a Pagani (SA)">
+	<meta property="og:image:alt" content="E.T.S. sas — UPS e Automazione Industriale in Campania">
 	<meta property="og:locale" content="it_IT">
 
 	<!-- Twitter / WhatsApp card -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="${TITLE}">
-	<meta name="twitter:description" content="Centro assistenza UPS autorizzato a Pagani. Astrid, Borri, GSC per aziende in Campania.">
+	<meta name="twitter:description" content="${DESC_SHORT}">
 	<meta name="twitter:image" content="${OG_IMAGE}">
 
 	<!-- Geo / Local -->
@@ -162,6 +165,7 @@ const META_BLOCK = `
 	<script type="application/ld+json">${JSON.stringify(schemaFAQ)}</script>
 	<script type="application/ld+json">${JSON.stringify(schemaBreadcrumb)}</script>
 	<!-- ═══ fine SEO ═══ -->`;
+
 
 // ── Sitemap ──────────────────────────────────────────────────────────────
 function generateSitemap() {
