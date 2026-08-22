@@ -2,9 +2,6 @@
 	"framework": null,
 	"buildCommand": "node build.js",
 	"outputDirectory": ".",
-	"rewrites": [
-		{ "source": "/blog/:slug", "destination": "/blog/index.html" }
-	],
 	"headers": [
 		{
 			"source": "/",
@@ -14,7 +11,7 @@
 			]
 		},
 		{
-			"source": "/blog/(.*)",
+			"source": "/(assistenza-ups-.*|manutenzione-ups|riparazione-ups|sostituzione-batterie-ups|ups)(.*)",
 			"headers": [
 				{ "key": "X-Robots-Tag", "value": "index, follow" },
 				{ "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }
@@ -39,8 +36,7 @@
 			"headers": [
 				{ "key": "X-Content-Type-Options", "value": "nosniff" },
 				{ "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-				{ "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-				{ "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+				{ "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
 			]
 		}
 	]
